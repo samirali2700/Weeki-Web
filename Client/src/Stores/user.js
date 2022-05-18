@@ -4,7 +4,7 @@ import { derived, writable, readable, get } from "svelte/store";
 // export const loggedIn = writable(true);
 
 //{name: 'ali', email: 'samirali@live.dk', admin: true}
-export const user = writable({name: 'ali', email: 'samirali@live.dk', admin: true});
+export const user = writable({});
 
 
 export const loggedIn = derived(user, ($user) => {
