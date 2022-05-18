@@ -38,8 +38,8 @@ let connectedUser = []
 // })
 
 
-import userRoute from "./Server/User/userApi.js";
-app.use(userRoute);
+// import userRoute from "./Server/User/userApi.js";
+// app.use(userRoute);
 
 
 app.get('*', (req,res) => {res.redirect('/')})
