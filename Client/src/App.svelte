@@ -32,14 +32,7 @@
     }
   });
 
-  function login() {
-    console.log(user_);
-    $isLoading = true;
-    setTimeout(() => {
-      $user = { name: "ali", email: "samirali@live.dk", admin: true };
-      $isLoading = false;
-    }, 1500);
-  }
+  function login() {}
 
   let development = true;
 </script>
