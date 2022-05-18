@@ -9553,7 +9553,7 @@ var app = (function () {
     			main = element("main");
     			create_component(private_1.$$.fragment);
     			attr_dev(main, "class", "svelte-5li0bo");
-    			add_location(main, file, 51, 6, 1334);
+    			add_location(main, file, 51, 6, 1385);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, main, anchor);
@@ -9684,7 +9684,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(notfound.$$.fragment);
-    			add_location(div, file, 72, 10, 1967);
+    			add_location(div, file, 72, 10, 2039);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
