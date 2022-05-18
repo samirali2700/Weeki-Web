@@ -13,25 +13,21 @@
   let w_size;
   let eeki_size;
 
-  switch (size) {
-    case "S":
-      w_size = "36px";
-      eeki_size = "16px";
-      break;
-    case "M":
-      w_size = "76px";
-      eeki_size = "46px";
-      break;
-    case "L":
-      w_size = "106px";
-      eeki_size = "96px";
-      break;
-    default:
-      w_size = "56px";
-      eeki_size = "36px";
+  $: if (size === "L") {
+    w_size = "156px";
+    eeki_size = "106px";
+  } else if (size === "M") {
+    w_size = "76px";
+    eeki_size = "46px";
+  } else if (size === "S") {
+    w_size = "36px";
+    eeki_size = "16px";
+  } else {
+    w_size = "56px";
+    eeki_size = "36px";
   }
 
-  let styles = {
+  $: styles = {
     "w-size": w_size,
     "eeki-size": eeki_size,
   };
@@ -49,7 +45,7 @@
 <style>
   #logo > span {
     font-size: var(--w-size, "76px");
-    color: var(--secondary-color, ligthgrey);
+    color: var(--secondary-color, "#0088ff");
   }
   #logo > p {
     font-size: var(--eeki-size, "56px");

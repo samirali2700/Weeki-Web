@@ -2,8 +2,6 @@
   import { Router, Route, navigate } from "svelte-routing";
   import ProtectedRoute from "./ProtectedRoute.svelte";
 
-  import { loggedIn } from "./Stores/user";
-
   import Login from "./Public/Login.svelte";
   import Signup from "./Public/Signup.svelte";
 
@@ -18,14 +16,29 @@
   import Private from "./Layouts/Private.svelte";
   import { onMount } from "svelte";
 
-  import { page } from "./Stores/store";
+  import { page, isLoading } from "./Stores/store";
+  import { loggedIn, user } from "./Stores/user";
 
   /**
    * Ensure that the page the user lands on after refresh is the lastVisited
    */
+
   onMount(() => {
-    navigate($page);
+    if ($loggedIn) {
+      navigate($page);
+    } else {
+      navigate("/");
+    }
   });
+
+  function login() {
+    console.log(user_);
+    $isLoading = true;
+    setTimeout(() => {
+      $user = { name: "ali", email: "samirali@live.dk", admin: true };
+      $isLoading = false;
+    }, 1500);
+  }
 </script>
 
 <Router>
@@ -44,9 +57,17 @@
     </main>
   {:else}
     <Public>
-      <Route path="/" component={Login} />
-      <Route path="/signup" component={Signup} />
-      <Route component={Login} />
+      <Route path="/">
+        <Login />
+      </Route>
+      <Route path="/signup">
+        <Signup />
+      </Route>
+      <Route>
+        <div>
+          <NotFound />
+        </div>
+      </Route>
     </Public>
   {/if}
 </Router>

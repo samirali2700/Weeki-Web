@@ -10,7 +10,7 @@ import { derived, writable, readable, get } from "svelte/store";
 export const page = writable(sessionStorage.getItem('lastVisited') || '/');
 
 
-export const loading = writable(false);
+export const isLoading = writable(false);
 
 
 /**
@@ -23,44 +23,101 @@ export const themes = writable([
         "name": "default",
         "display-name": "Original",
         "primary": '#000000',
-        "secondary": '#0088ff'
-    },
-      {
-        "name": "vibrant",
-        "display-name": "Levende",
-        "primary": '#00A4CCFF',
-        "secondary": '#F95700FF'
+        "secondary": '#0088ff',
+        "text": "#fff"
     },
     {
         "name": "balance",
         "display-name": "Balance",
-       "primary": '#000000FF',
-       "secondary": '#FFFFFFFF'
-   },
+        "primary": '#000000FF',
+        "secondary": '#FFFFFFFF',
+        "text": "#808080"
+    },
+    { 
+        "name": 'honesty',
+        "display-name": "Ærlighed",
+        "primary": "#89ABE3FF",
+        "secondary": "#FCF6F5FF",
+        "text": "#000"
+    },
+    { 
+        "name": 'summer',
+        "display-name": "Sommer",
+        "primary": "#00B1D2FF",
+        "secondary": "#FDDB27FF",
+        "text": "#000"
+    },
+    { 
+        "name": 'easy_going',
+        "display-name": "Stille og Rolig",
+        "primary": "#101820FF",
+        "secondary": "#FEE715FF",
+        "text": "#fff"
+    },
     {
-        "name": "tropical",
-        "display-name": "Tropisk",
-    "primary": '#42EADDFF',
-    "secondary": '#CDB599FF'
-    },
-     {
-         "name": "magic",
-         "display-name": "Magi",
-        "primary": '#5F4B8BFF',
-        "secondary": '#E69A8DFF'
-    },
-     {
-         "name": "seabed",
-         "display-name": "Havbund",
+        "name": "seabed",
+        "display-name": "Havbund",
         "primary": '#FC766AFF',
-        "secondary": '#5B84B1FF'
+        "secondary": '#5B84B1FF',
+        "text": "#fff"
     },
-     {
+    {
         "name": "strength_and_hope",
         "display-name": "Styrke og Håb",
         "primary": '#949398FF',
-        "secondary": '#F4DF4EFF'
-    }
+        "secondary": '#F4DF4EFF',
+        "text": "#000"
+    },
+    {
+        "name": "vibrant",
+        "display-name": "Levende",
+        "primary": '#00A4CCFF',
+        "secondary": '#F95700FF',
+        "text": "#000"
+    },
+    {
+        "name": "tropical",
+        "display-name": "Tropisk",
+        "primary": '#42EADDFF',
+        "secondary": '#CDB599FF',
+        "text": "#fff"
+    },
+    { 
+        "name": 'cold_mint',
+        "display-name": "Frisk Mynte",
+        "primary": "#00203FFF",
+        "secondary": "#ADEFD1FF",
+        "text": "#fff"
+    },
+    { 
+        "name": 'Greenery',
+        "display-name": "Naturen",
+        "primary": "#2C5F2D",
+        "secondary": "#97BC62FF",
+        "text": "#fff"
+    },
+    { 
+        "name": 'creativity',
+        "display-name": "Kreativit",
+        "primary": "#00539CFF",
+        "secondary": "#EEA47FFF",
+        "text": "#fff"
+    },
+    { 
+        "name": 'cherry_tomato',
+        "display-name": "Cherry Tomat",
+        "primary": "#2D2926FF",
+        "secondary": "#E94B3CFF",
+        "text": "#fff"
+    },
+    {
+        "name": "magic",
+        "display-name": "Magi",
+        "primary": '#5F4B8BFF',
+        "secondary": '#E69A8DFF',
+        "text": "#fff"
+    },
+     
 ]);
 
 
@@ -81,11 +138,13 @@ $: localStorage.setItem('theme', get(theme));
 
 //derive primary and seconday colors from current theme and themes list
 export const primary_color = derived([theme, themes], ($value, set) => {
-
-    console.log('hello here from store')
-    set($value[1].filter((t) => t.name === $value[0])[0].primary || '#000' );
+    set($value[1].find((c) => c.name === $value[0]).primary || '#000');
 });
 
 export const secondary_color = derived([theme, themes], ($value, set) => {
-    set($value[1].filter((t) => t.name === $value[0])[0].secondary || '#000' );
+    set($value[1].find((c) => c.name === $value[0]).secondary || '#0088ff');
+});
+
+export const text_color = derived([theme, themes], ($value, set) => {
+    set($value[1].find((c) => c.name === $value[0]).text || '#808080');
 });

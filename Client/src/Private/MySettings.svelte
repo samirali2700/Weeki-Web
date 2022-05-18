@@ -1,17 +1,18 @@
 <script>
-  import { slide, fly } from "svelte/transition";
+  import { slide, scale } from "svelte/transition";
   import { themes, theme } from "../Stores/store";
 
-  import { user } from "../Stores/user";
+  import { user, isAdmin } from "../Stores/user";
+
+  import General from "../Components/MySettings/General.svelte";
+  import App from "../Components/MySettings/App.svelte";
 
   let current = "general";
-
   let selected = $theme;
-  $: selectedTheme = $themes.find((th) => th.name === selected);
 
   function changeTheme() {
-    localStorage.setItem("theme", selectedTheme.name);
-    $theme = selectedTheme.name;
+    localStorage.setItem("theme", selected);
+    $theme = selected;
   }
 </script>
 
@@ -36,62 +37,15 @@
   >
 </div>
 
-<div class="settings w3-section  w3-card">
+<div class="w3-container content">
   {#if current === "general"}
-    {#if $user.admin}
-      <p>Administrator</p>
-      <input value="Ja" style:border="none" />
-      <p>Medarbejder</p>
-      <input value="0" style:border="none" />
-    {/if}
-
-    <p>Virksomhed</p>
-    <input readonly value="Weeki" style:border="none" />
-
-    <p>Navn</p>
-    <input type="text" value={$user.name || "ikke registeret"} />
-
-    <p>Email</p>
-    <input type="email" value={$user.email} />
-
-    <p>Agangskode</p>
-    <input type="password" value={$user.password} />
-
-    <p>Mobil nummer</p>
-    <input type="number" value={$user.phone} />
+    <div in:slide>
+      <General isAdmin={$isAdmin} user={$user} />
+    </div>
   {:else if current === "app"}
-    <p>Tema</p>
-    <div>
-      <select
-        bind:value={selected}
-        default={localStorage.getItem("theme") || "default"}
-        style:width="100%"
-        style:height="45px"
-      >
-        {#each $themes as theme, index}
-          <option value={theme.name}>{theme["display-name"]}</option>
-        {/each}
-      </select>
+    <div in:slide>
+      <App themes={$themes} bind:selected on:click={changeTheme} />
     </div>
-    <p>Farvepalet</p>
-    <div style:display="flex" class="w3-border">
-      <div
-        style:height="45px"
-        style:width="50%"
-        style:background-color={selectedTheme.primary}
-      />
-      <div
-        style:height="45px"
-        style:width="50%"
-        style:background-color={selectedTheme.secondary}
-      />
-    </div>
-    <div />
-    <button
-      class="w3-button w3-hover w3-text-white"
-      style:background-color={selectedTheme.primary}
-      on:click={changeTheme}>Bekræft Tema</button
-    >
   {:else if current === "mere"}
     <h1>mere</h1>
   {/if}
@@ -103,7 +57,7 @@
     color: var(--text-color, ligthgrey);
   }
   .tab {
-    margin: 15px 0;
+    margin-top: 15px;
     border-bottom: 1px solid #cecece;
   }
   .active {

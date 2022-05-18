@@ -40,6 +40,9 @@ input, button, select, textarea {
 input:disabled {
 	color: #ccc;
 }
+input:focus {
+	outline:none;
+}
 
 button {
 	color: #333;
@@ -65,10 +68,4 @@ button:focus {
 	align-items: center;
 	user-select: none;
 	font-weight: bold;
-}
-#logo p {
-    color: #fff;
-  }
-#logo span {
-	color: #4a90e2;
 }
