@@ -11,6 +11,8 @@ html, body {
 	box-sizing: border-box;
 }
 body {
+	overflow: auto;
+	overflow-y: overlay;
 	color: #333;
 	margin: 0;
 	box-sizing: border-box;

@@ -11,6 +11,7 @@
   import Employees from "./Private/Employees.svelte";
   import MySettings from "./Private/MySettings.svelte";
   import NotFound from "./NotFound.svelte";
+  import CommingSoon from "./CommingSoon.svelte";
 
   import Public from "./Layouts/Public.svelte";
   import Private from "./Layouts/Private.svelte";
@@ -39,38 +40,44 @@
       $isLoading = false;
     }, 1500);
   }
+
+  let development = true;
 </script>
 
-<Router>
-  {#if $loggedIn}
-    <main>
-      <Private>
-        <ProtectedRoute path="/" component={Home} />
-        <ProtectedRoute path="/schedule" component={Schedule} />
-        <ProtectedRoute path="/messages" component={Messages} />
-        <ProtectedRoute path="/employees" component={Employees} />
-        <ProtectedRoute path="/mysettings" component={MySettings} />
-        <Route>
-          <NotFound />
+{#if development}
+  <CommingSoon />
+{:else}
+  <Router>
+    {#if $loggedIn}
+      <main>
+        <Private>
+          <ProtectedRoute path="/" component={Home} />
+          <ProtectedRoute path="/schedule" component={Schedule} />
+          <ProtectedRoute path="/messages" component={Messages} />
+          <ProtectedRoute path="/employees" component={Employees} />
+          <ProtectedRoute path="/mysettings" component={MySettings} />
+          <Route>
+            <NotFound />
+          </Route>
+        </Private>
+      </main>
+    {:else}
+      <Public>
+        <Route path="/">
+          <Login />
         </Route>
-      </Private>
-    </main>
-  {:else}
-    <Public>
-      <Route path="/">
-        <Login />
-      </Route>
-      <Route path="/signup">
-        <Signup />
-      </Route>
-      <Route>
-        <div>
-          <NotFound />
-        </div>
-      </Route>
-    </Public>
-  {/if}
-</Router>
+        <Route path="/signup">
+          <Signup />
+        </Route>
+        <Route>
+          <div>
+            <NotFound />
+          </div>
+        </Route>
+      </Public>
+    {/if}
+  </Router>
+{/if}
 
 <style>
   @media (min-width: 640px) {
