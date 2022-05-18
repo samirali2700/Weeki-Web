@@ -5,7 +5,7 @@ import http from "http";
 import cookieParser from "cookie-parser";
 
 const app = express();
-const server = http.createServer(app);
+//const server = http.createServer(app);
 
 //static 
 import path from "path";
@@ -18,13 +18,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-//io socket connection
-import { Server } from "socket.io";
-const io = new Server(server);
+// //io socket connection
+// import { Server } from "socket.io";
+// const io = new Server(server);
 
-const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+// const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
 
-let connectedUser = []
+// let connectedUser = []
 
 // io.on('connection', (socket) => {
 
@@ -46,6 +46,6 @@ app.get('*', (req,res) => {res.redirect('/')})
 
 
 
-server.listen(process.env.PORT || 3000 , () => {
+const server = app.listen(process.env.PORT || 3000 , () => {
     console.log('app listening on port', server.address().port);
 })
