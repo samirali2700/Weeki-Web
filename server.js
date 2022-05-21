@@ -26,12 +26,13 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
 
+// import authRoute from "./Server/routes/auth.route.js";
+// app.use(authRoute);
 
-import authRoute from "./Server/routes/auth.route.js";
-app.use(authRoute);
+// import userRoute from "./Server/User/userApi.js";
+// app.use(userRoute);
 
-import userRoute from "./Server/User/userApi.js";
-app.use(userRoute);
+
 
 app.get('*', (req,res) => {res.redirect('/')})
 
