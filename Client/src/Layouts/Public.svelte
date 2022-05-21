@@ -53,14 +53,17 @@
     position: relative;
   }
   .main {
-    height: 100vh;
     width: 100vw;
+    height: 100%;
   }
   .container {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .logo {
+    height: 100vh;
   }
 
   @media screen and (max-width: 960px) {

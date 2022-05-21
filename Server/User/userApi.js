@@ -96,7 +96,7 @@ async function signin(req, res){
              * expiration interval 5 minutes to 2 weeks.
              */
             const sessionCookie = await app.auth().createSessionCookie(response.idToken, { expiresIn /** A Day */});
-            res.cookie('session_cookie', sessionCookie,  {httpOnly: true, secure: true, sameSite: 'strict', maxAge: expiresIn});
+            res.cookie('session_cookie', sessionCookie,  {httpOnly: true, secure: false, sameSite: 'strict', maxAge: expiresIn});
             
             const returnObject = {
                 email: verified.email,
@@ -262,16 +262,18 @@ userRoute.post('/api/signup', async (req,res) => {
                                                                                     //  SIGN OUT
 userRoute.delete('/api/signout', async (req, res) => {
     const sessionCookie = req.cookies.session_cookie || '';
+    console.log(req.cookies);
 
     try{
-        const result = await app.auth().verifySessionCookie(sessionCookie);
-        await app.auth().revokeRefreshTokens(result.sub);
+      
         res.clearCookie('session_cookie');
-        res.status(201).send({error: 'Testing'});
+        res.status(201).send();
+        
+        //const result = await app.auth().verifySessionCookie(sessionCookie);
+        //await app.auth().revokeRefreshTokens(result.sub);
     }
     catch(e){
         console.log(e);
-        res.status(403).send({error: e.message || e})
     }   
 })
 

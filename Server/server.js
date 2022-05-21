@@ -3,19 +3,21 @@ import "dotenv/config";
 import express from "express";
 import http from "http";
 import cookieParser from "cookie-parser";
+import session from "express-session";
 
 const app = express();
-//const server = http.createServer(app);
+const server = http.createServer(app);
 
 //static 
 import path from "path";
 app.use(express.static(path.resolve("./Client/public")));
 
-
 //parser
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
+
+
 
 
 // //io socket connection
@@ -38,14 +40,14 @@ app.use(cookieParser());
 // })
 
 
-// import userRoute from "./Server/User/userApi.js";
-// app.use(userRoute);
+import userRoute from "./User/userApi.js";
+app.use(userRoute);
 
 
 app.get('*', (req,res) => {res.redirect('/')})
 
+const PORT = 3000 || process.env.PORT;
 
-
-const server = app.listen(process.env.PORT || 3000 , () => {
+server.listen(PORT, () => {
     console.log('app listening on port', server.address().port);
 })

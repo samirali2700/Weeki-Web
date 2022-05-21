@@ -30,7 +30,6 @@
 
 <style>
   .container {
-    padding-top: 50px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     row-gap: 10px;

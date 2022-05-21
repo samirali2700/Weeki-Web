@@ -1,0 +1,1 @@
+const url = 'https://myapp-567d6-default-rtdb.europe-west1.firebasedatabase.app/';

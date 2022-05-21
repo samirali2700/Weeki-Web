@@ -5,16 +5,27 @@
   import { isLoading } from "../Stores/store";
   import { user } from "../Stores/user";
 
-  let user_ = {
-    email: "samirali@live.dk",
-    password: "123456789",
-  };
-  function login() {
+  let email;
+  let password;
+
+  async function login() {
     $isLoading = true;
-    setTimeout(() => {
-      $user = { name: "Ali", admin: true };
-      $isLoading = false;
-    }, 2500);
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    };
+    const response = await fetch("/api/signin", options);
+    const data = await response.json();
+
+    if (response.status !== 403) {
+      $user = data;
+    } else {
+      console.log("wrong input");
+    }
+    $isLoading = false;
   }
 </script>
 
@@ -27,15 +38,10 @@
     <div>
       <form on:submit|preventDefault={login}>
         <label for="email"> Brugernavn*</label>
-        <input id="email" name="email" bind:value={user_.email} required />
+        <input id="email" name="email" bind:value={email} required />
 
         <label for="password"> Adgangskode*</label>
-        <input
-          id="password"
-          type="password"
-          bind:value={user_.password}
-          required
-        />
+        <input id="password" type="password" bind:value={password} required />
 
         <input
           type="submit"
@@ -76,7 +82,8 @@
   }
   .container {
     margin: 0 7%;
-    height: 100vh;
+    height: fit-content;
+    max-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;

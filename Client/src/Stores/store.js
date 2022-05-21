@@ -26,13 +26,7 @@ export const themes = writable([
         "secondary": '#0088ff',
         "text": "#fff"
     },
-    {
-        "name": "balance",
-        "display-name": "Balance",
-        "primary": '#000000FF',
-        "secondary": '#FFFFFFFF',
-        "text": "#808080"
-    },
+
     { 
         "name": 'honesty',
         "display-name": "Ærlighed",
@@ -90,10 +84,10 @@ export const themes = writable([
         "text": "#fff"
     },
     { 
-        "name": 'Greenery',
+        "name": 'greenery',
         "display-name": "Naturen",
-        "primary": "#2C5F2D",
-        "secondary": "#97BC62FF",
+        "primary": "#03811c",//
+        "secondary": "#3db217",
         "text": "#fff"
     },
     { 
@@ -117,6 +111,13 @@ export const themes = writable([
         "secondary": '#E69A8DFF',
         "text": "#fff"
     },
+    {
+        "name": "custom",
+        "display-name": "custom",
+        "primary": '',
+        "secondary": '',
+        "text": "#fff"
+    }
      
 ]);
 
@@ -146,5 +147,5 @@ export const secondary_color = derived([theme, themes], ($value, set) => {
 });
 
 export const text_color = derived([theme, themes], ($value, set) => {
-    set($value[1].find((c) => c.name === $value[0]).text || '#808080');
+    set($value[1].find((c) => c.name === $value[0]).text);
 });

@@ -1,6 +1,7 @@
 <script>
   import { navigate } from "svelte-routing";
   import { slide } from "svelte/transition";
+  import { page } from "./Stores/store";
 
   let counter = 5;
   const dcr = () => (counter -= 1);
@@ -9,6 +10,7 @@
 
   setTimeout(() => {
     clearInterval(clear);
+    $page = "/";
     navigate("/", { replace: true });
   }, 5000);
 </script>
