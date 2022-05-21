@@ -11,13 +11,13 @@ const server = http.createServer(app);
 
 //authenticating every request to server
 //is placed before resolving static files
-import authenticate from "./Auth/authenticate.js";
+import authenticate from "./Server/Auth/authenticate.js";
 app.use(authenticate);
 
 
 //static 
 import path from "path";
-app.use(express.static(path.resolve("../Client/public")));
+app.use(express.static(path.resolve("./Client/public")));
 
 
 
@@ -27,10 +27,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-import authRoute from "./routes/auth.route.js";
+import authRoute from "./Server/routes/auth.route.js";
 app.use(authRoute);
 
-import userRoute from "./User/userApi.js";
+import userRoute from "./Server/User/userApi.js";
 app.use(userRoute);
 
 app.get('*', (req,res) => {res.redirect('/')})
