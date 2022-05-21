@@ -26,7 +26,6 @@
       class="w3-button w3-hover-blue"
       on:click={() => {
         info = !info;
-        y = 250;
       }}
     >
       Se hvad Vi kan gøre for dig
