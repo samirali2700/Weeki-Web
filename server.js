@@ -11,8 +11,8 @@ const server = http.createServer(app);
 
 //authenticating every request to server
 //is placed before resolving static files
-import authenticate from "./Server/Auth/authenticate.js";
-app.use(authenticate);
+// import authenticate from "./Server/Auth/authenticate.js";
+// app.use(authenticate);
 
 
 //static 
