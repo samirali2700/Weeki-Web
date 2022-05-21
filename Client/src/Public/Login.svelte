@@ -17,13 +17,13 @@
       },
       body: JSON.stringify({ email, password }),
     };
-    const response = await fetch("/api/signin", options);
+    const response = await fetch("/signin", options);
     const data = await response.json();
 
     if (response.status !== 403) {
       $user = data;
     } else {
-      console.log("wrong input");
+      toastr.error(data.error, "Fejl", { positionClass: "toast-top-left" });
     }
     $isLoading = false;
   }

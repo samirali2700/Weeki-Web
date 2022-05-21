@@ -1,53 +1,6 @@
 import "dotenv/config";
 import fetch from "node-fetch";
 
-
-const signin = (email, password) => {
-    const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+process.env.FIREBASE_KEY;
-
-    //this is what the api expects
-    POSTOptions.body = JSON.stringify({
-        email: email, 
-        password: password,
-        returnSecureToken: true
-    });
-
-
-    return new Promise(async (resolve, reject) => {
-        const response = await fetch(url, POSTOptions);    
-        const data = await response.json();
-
-        //a successfull request is indicated by code 200, so anything different will be an error
-        if(response.status !== 200){
-            reject(data);
-        }
-        resolve(data);
-    })
-}
-
-
-const sendVerificationMail = (idToken) => {
-    const url = 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key='+process.env.FIREBASE_KEY;
-
-    //this is what the api expects
-    POSTOptions.body = JSON.stringify({
-        requestType: 'VERIFY_EMAIL',
-        idToken: idToken,
-    });
-
-
-    return new Promise(async (resolve, reject) => {
-        const response = await fetch(url, POSTOptions);    
-        const data = await response.json();
-
-        //a successfull request is indicated by code 200, so anything different will be an error
-        if(response.status !== 200){
-            reject(data);
-        }
-        resolve(data);
-    })
-}
-
 //type: string, payload: Object
 const sendRequest = (type, payload) => {
     const POSTOptions = {

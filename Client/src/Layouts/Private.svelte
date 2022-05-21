@@ -28,7 +28,7 @@
     .join(";");
 
   async function signout() {
-    const response = await fetch("/api/signout", { method: "DELETE" });
+    const response = await fetch("/signout", { method: "DELETE" });
 
     //201 Ok
     if (response.status === 201) {

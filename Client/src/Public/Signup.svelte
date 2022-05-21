@@ -2,15 +2,21 @@
   import { navigate, Link } from "svelte-routing";
 
   import TiArrowBackOutline from "svelte-icons/ti/TiArrowBackOutline.svelte";
+  import { user } from "../Stores/user";
+  import { isLoading } from "../Stores/store";
 
   import { slide } from "svelte/transition";
 
   //components
   import Create from "./Signup/Create.svelte";
   import Join from "./Signup/Join.svelte";
-
+  console.log("i ran now");
   let method = "init";
   let step = 0;
+
+  function setUser(newUser) {
+    $user = newUser;
+  }
 
   function goBack() {
     if (method === "init") {
@@ -23,9 +29,30 @@
       }
     }
   }
-  function signup(e) {
+  async function signup(e) {
     const user = e.detail[0];
     const company = e.detail[1];
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ user: user, company: company, method: "create" }),
+    };
+
+    const response = await fetch("/signup", options);
+    const data = await response.json();
+
+    if (response.status === 201) {
+      setUser(data);
+      navigate("/");
+      toastr.success(data.email, "Velkommen,", {
+        positionClass: "toast-top-left",
+      });
+    } else {
+      toastr.error(data.error, "Fejl"), { positionClass: "toast-top-left" };
+    }
   }
 </script>
 

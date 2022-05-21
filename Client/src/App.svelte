@@ -37,6 +37,7 @@
   //stores
   import { page, primary_color, secondary_color } from "./Stores/store";
   import { loggedIn, user } from "./Stores/user";
+  import CommingSoon from "./CommingSoon.svelte";
 
   /**
    * while the app is loading and waiting for the response from the server
@@ -46,7 +47,7 @@
   let state = "init";
 
   onMount(async () => {
-    $user = { name: "ali", email: "samirali@live.dk" };
+    //$user = { name: "ali", email: "samirali@live.dk" };
     /**
      * auth needs to be done here, and on Mount
      * that is, to early on define whether the user is authorized to access the private pages
@@ -66,14 +67,16 @@
     // } else {
     //   navigate("/");
     // }
-    navigate($page);
+    // navigate($page);
     state = "ready";
   });
 
   let development = true;
 </script>
 
-{#if state === "init"}
+{#if development}
+  <CommingSoon />
+{:else if state === "init"}
   <Loader styles={{ outer: $primary_color, center: $secondary_color }} />
 {:else}
   <Router>

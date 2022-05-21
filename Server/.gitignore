@@ -1,5 +1,6 @@
 .env
-Server/Auth
-Server/Database
 node_modules
+configs
+
+
 

@@ -38,9 +38,21 @@
         >
           <b>For dig der er leder</b>
           <ul>
-            <li>Du får kontrol og overblik over dine ansatte</li>
-            <li>Du får kontrol og overblik over vagtplanen</li>
-            <li>Du kan nemt og hurtigt kommunikere med dine ansatte</li>
+            <li>
+              Du får kontrol og overblik over dine ansatte og deres vagter
+            </li>
+            <li>
+              Du får detaljeret overblik over dine ansattes timer, mødetid,
+              forsinkelser, ferier og meget mere
+            </li>
+            <li>Opret teams og uddel tasks/assignments</li>
+            <li>kræv at dine ansatte checker ind og ud af vagten</li>
+            <li>
+              Afsæt timeløn, så dine ansatte kan følge med i deres forventet
+              indkomst
+            </li>
+            <li>Udmelde til alle dine ansatte eller bestemte</li>
+            <li>fordel stillinger til dine ansatte</li>
           </ul>
         </div>
         <div
@@ -64,7 +76,7 @@
             </li>
             <li>
               Du behøver ikke at nøjes med vores Original Tema, du kan vælge fra
-              et divers udvalg eller vælg dine helt egene unikke tema
+              et divers udvalg
             </li>
             <li>
               Vores mål er at gøre vores produkt til et brugervenligt produkt,
