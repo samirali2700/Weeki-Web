@@ -37,7 +37,7 @@ app.use(cookieParser());
 app.get('*', (req,res) => {res.redirect('/')})
 
 
-const PORT = process.env.PORT || 300;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log('app listening on port', server.address().port);
 })

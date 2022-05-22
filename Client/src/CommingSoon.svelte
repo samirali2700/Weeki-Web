@@ -6,19 +6,21 @@
 </script>
 
 <div class="main">
-  <div class="container w3-container w3-border" style={styles}>
-    <div>
+  <div class="intro-container w3-container" style={styles}>
+    <div class="logo">
       <Logo size={"L"} />
     </div>
-    <h1>Vi kommer snart!</h1>
-    <div class="w3-center w3-section">
-      <b>Hvis alt går vel, er vi ude sommer 2023</b>
-    </div>
-    <div class="content w3-container  w3-center">
-      <p>
-        Snart kommer vi ud med <b> Weeki</b>, et management system for all typer
-        virksomheder og størrelser.
-      </p>
+    <div class="w3-container intro-text-container">
+      <h1>Vi kommer snart!</h1>
+      <div class="w3-center w3-section">
+        <b>Hvis alt går vel, er vi ude sommer 2023</b>
+      </div>
+      <div class="content w3-container  w3-center">
+        <p>
+          Snart kommer vi ud med <b> Weeki</b>, et management system for all
+          typer virksomheder og størrelser.
+        </p>
+      </div>
     </div>
   </div>
   <div class="container">
@@ -92,6 +94,7 @@
 <style>
   .main {
     height: 100vh;
+    padding: 25px 0;
   }
   .container {
     display: flex;
@@ -100,10 +103,27 @@
     justify-content: center;
     padding: 25px 0;
   }
+  .intro-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    column-gap: 25px;
+  }
+  .intro-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .content {
     padding: 50px 25px;
     width: 80%;
   }
+  .logo {
+    transform: perspective(1000px) skewX(10deg) skewY(-0.5deg) rotateY(35deg);
+    text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  }
+
   p,
   ul {
     font-family: "Gluten", cursive;

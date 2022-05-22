@@ -2,7 +2,7 @@ import { app } from "../configs/firebase-admin.js";
 import "dotenv/config";
 
 export default (req, res, next) => {
-
+    console.log('was here')
     if(!process.env.NODE_ENV === 'development') {
        if(req.hostname !== 'weekiprojekt.com' || req.hostname !== 'weeki.dk') {
             res.redirect('http://weekiprojekt.com');
@@ -17,13 +17,7 @@ export default (req, res, next) => {
         res.send('hello')
     }
     catch(e){
-       
-        if (req.url === '/'){
-            next();
-        }
-        else {
-            next();
-        }
+       next();
     }
     
    
