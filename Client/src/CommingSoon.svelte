@@ -5,27 +5,31 @@
   let info = false;
 </script>
 
-<div class="main">
+<div class="main w3-black">
   <div class="intro-container w3-container" style={styles}>
     <div class="logo">
-      <Logo size={"L"} />
+      <Logo size={"M"} />
     </div>
     <div class="w3-container intro-text-container">
-      <h1>Vi kommer snart!</h1>
-      <div class="w3-center w3-section">
-        <b>Hvis alt går vel, er vi ude sommer 2023</b>
+      <div
+        style:padding="0 50px"
+        class="w3-bottombar w3-container  w3-border-blue"
+      >
+        <h1>We're comming soon</h1>
       </div>
-      <div class="content w3-container  w3-center">
+
+      <div class="content w3-container w3-center">
         <p>
           Snart kommer vi ud med <b> Weeki</b>, et management system for all
-          typer virksomheder og størrelser.
+          typer virksomheder og størrelser. Hvis alt går vel, er vi ude sommer
+          2023
         </p>
       </div>
     </div>
   </div>
   <div class="container">
     <p
-      class="w3-button w3-hover-blue"
+      class="w3-button w3-hover-blue w3-border"
       on:click={() => {
         info = !info;
       }}
@@ -93,8 +97,13 @@
 
 <style>
   .main {
-    height: 100vh;
+    min-height: 100vh;
     padding: 25px 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, #0088ff 170vh);
+  }
+  h1 {
+    text-transform: uppercase;
+    font-weight: 600;
   }
   .container {
     display: flex;
@@ -106,6 +115,7 @@
   .intro-container {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     column-gap: 25px;
@@ -117,14 +127,16 @@
   }
   .content {
     padding: 50px 25px;
-    width: 80%;
+    width: 60%;
+  }
+  .intro-text-container > .content {
+    width: 40%;
   }
   .logo {
-    transform: perspective(1000px) skewX(10deg) skewY(-0.5deg) rotateY(35deg);
+    transform: perspective(1000px);
     text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
   }
 
-  p,
   ul {
     font-family: "Gluten", cursive;
   }
