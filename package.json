@@ -1,0 +1,24 @@
+{
+  "name": "weeki",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type":"module",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "firebase-admin": "^10.2.0",
+    "node-fetch": "^3.2.4",
+    "nodemon": "^2.0.16",
+    "socket.io": "^4.5.0"
+  }
+}

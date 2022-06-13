@@ -1,0 +1,18 @@
+/**         SIGNIN
+     * What to do if signed in?
+     * cookie : session
+     * since this project is of course not going to be used by many if any 
+     * the need to prefer a method over the other is not neccessary
+     * but because the site is designed to be for workplaces,
+     * and in theory should be used by alot of employees, and could be used by alot at the same time
+     * the session method, would not be a good solutions if the session data gets too big
+     * and in case of scaling the server, the session would not be able to work together across servers
+     * so the best solution in my opinion falls on cookies, no load on the server memory
+     * and is very flexisable, and scaling would not effect the already implemented solution 
+     */
+
+    /**
+     * Do expiration a day?
+     * or 15min, 1 hour?
+     * in auth check for expiration, if near expiration reassign a session cookie
+     */

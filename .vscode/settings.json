@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/25cc2537-7ea6-4624-97c5-3e87b955d456/resourceGroups/appservice/providers/Microsoft.Web/sites/Weeki",
+    "appService.deploySubpath": "."
+}
