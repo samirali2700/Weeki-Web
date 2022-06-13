@@ -37,7 +37,6 @@
   //stores
   import { page, primary_color, secondary_color } from "./Stores/store";
   import { loggedIn, user } from "./Stores/user";
-  import CommingSoon from "./CommingSoon.svelte";
 
   /**
    * while the app is loading and waiting for the response from the server
@@ -70,13 +69,9 @@
     // navigate($page);
     state = "ready";
   });
-
-  let development = true;
 </script>
 
-{#if development}
-  <CommingSoon />
-{:else if state === "init"}
+{#if state === "init"}
   <Loader styles={{ outer: $primary_color, center: $secondary_color }} />
 {:else}
   <Router>

@@ -38,12 +38,14 @@
 </script>
 
 <div id="logo" style={logoStyles}>
-  <span>W</span>
-  <p>eeki</p>
+  <p><span>W</span>eeki</p>
 </div>
 
 <style>
-  #logo > span {
+  #logo {
+    user-select: none;
+  }
+  #logo > p > span {
     font-size: var(--w-size, "76px");
     color: var(--secondary-color, "#0088ff");
   }

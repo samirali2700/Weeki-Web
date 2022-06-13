@@ -9,15 +9,15 @@ const app = express();
 const server = http.createServer(app);
 
 
-//authenticating every request to server
-//is placed before resolving static files
-// import authenticate from "./Server/Auth/authenticate.js";
-// app.use(authenticate);
 
 
 //static 
 import path from "path";
-app.use(express.static(path.resolve("./Client/public")));
+if (process.env.NODE_ENV !== 'dev') {
+    app.use(express.static(path.resolve("./Client/public")));
+}
+else app.use(express.static(path.resolve("./dev")));
+
 
 
 
