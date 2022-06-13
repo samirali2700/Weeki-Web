@@ -13,7 +13,7 @@ const server = http.createServer(app);
 
 //static 
 import path from "path";
-if (process.env.NODE_ENV !== 'dev') {
+if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve("./Client/public")));
 }
 else app.use(express.static(path.resolve("./dev")));
