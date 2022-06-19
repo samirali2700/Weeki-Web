@@ -1,4 +1,4 @@
 ---
 deployment:
   task: 
-    - node server.js
+    - node app.js
