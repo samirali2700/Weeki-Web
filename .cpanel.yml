@@ -1,0 +1,4 @@
+---
+deployment:
+  task: 
+    - node server.js

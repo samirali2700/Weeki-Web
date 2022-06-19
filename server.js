@@ -8,39 +8,50 @@ import cookieParser from "cookie-parser";
 const app = express();
 const server = http.createServer(app);
 
-
-
-
-//static 
 import path from "path";
-if (process.env.NODE_ENV === 'production') {
+
+if (process.env.NODE_ENV === 'dev') {
     app.use(express.static(path.resolve("./Client/public")));
 }
 else app.use(express.static(path.resolve("./dev")));
 
-
-
-
-//parser
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
 
-// import authRoute from "./Server/routes/auth.route.js";
-// app.use(authRoute);
 
-// import userRoute from "./Server/User/userApi.js";
-// app.use(userRoute);
+
+import authRouter from "./Server/routes/auth.routes.js";
+app.use(authRouter);
+
+import userRouter from "./Server/routes/user.routes.js";
+app.use(userRouter);
+
+import companyRouter from "./Server/routes/company.routes.js";
+app.use(companyRouter);
+
+
 
 
 
 app.get('*', (req,res) => {res.redirect('/')})
 
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log('app listening on port', server.address().port);
-})
+import { connect } from "./Server/DB/mongoDBconnect.js"
+import { nextTick } from "process";
+try{
+    await connect()
+    server.listen(process.env.PORT, () => {
+        console.log('app listening on port', server.address().port);
+    })
+}catch(e) {
+    console.log('could not connect to db');
+}
+
+
+
+   
+
 
 
 
