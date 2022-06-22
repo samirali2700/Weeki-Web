@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 
 import express from "express";
 import http from "http";
@@ -20,10 +19,11 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
 
-
+import { authorize } from "./Server/utils/validation.js";
+app.use(authorize);
 
 import authRouter from "./Server/routes/auth.routes.js";
-app.use(authRouter);
+app.use('/auth', authRouter);
 
 import userRouter from "./Server/routes/user.routes.js";
 app.use(userRouter);

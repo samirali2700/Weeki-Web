@@ -10,6 +10,6 @@
 
 <Route {path} let:params let:location let:navigate>
     <PrivateRouteGuard>
-        <svelte:component this={component} {params}></svelte:component>
+        <svelte:component this={component} {location}></svelte:component>
     </PrivateRouteGuard>
 </Route>

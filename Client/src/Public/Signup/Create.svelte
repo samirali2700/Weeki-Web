@@ -3,7 +3,11 @@
   import Detail from "./create/RegisterUser.svelte";
   import Company from "./create/RegisterCompany.svelte";
 
-  import { toast } from '@zerodevx/svelte-toast'
+  import { toast } from '@zerodevx/svelte-toast';
+  import Loader from "../../Components/Loader.svelte";
+
+
+  import { user } from "../../Stores/user";
 
   function notify(type, message){
     toast.pop();
@@ -17,49 +21,79 @@
 
   let step = 0;
   let id = 0;
-  let user = {};
+  let authentication = {};
+  let detail = {
+    admin: true
+  };
+  let company = {};
+
+  let isLoading = false;
 
 
-  async function registerAuthentication(e) {
-    const response = await fetch('/signup', {method: 'POST', headers:  { 'Content-type': 'application/json'}, 
-    body: JSON.stringify(e.detail)});
-    const { payload, error } = await response.json();
+  async function registerAuthentication() {
+    const { payload } = await fetchFunction('/auth/signup', authentication);
     if(payload){
-      console.log(payload.id)
       id = payload.id;
       step = 1;
-    }else notify('error', error);
+    }
   }
-  async function registerUser(e) {
-    user = e.detail;
-    console.log(user)
-    step = 2;
-  }
-  async function registerCompany(e) {
-    const response = await fetch(`/createCompany/${id}`, {method: 'POST', headers:  { 'Content-type': 'application/json'}, 
-    body: JSON.stringify(e.detail)});
-    const { payload, error } = await response.json();
+
+  async function registerCompany() {
+    const url = `/createCompany/${id}`;
+    const { payload } = await fetchFunction(url, company);
     if(payload){
-      console.log(payload)
-      
-    }else notify('error', error);
+      await registerUser(payload.companyId);
+    }
+  }
+
+  async function registerUser(companyId){
+    const url = `/createUser/${companyId}/${id}`
+    const { payload } = await fetchFunction(url, detail);
+    if(payload) {
+      await signin()
+    }
+  }
+  async function signin(){
+    const { payload } = await fetchFunction('/auth/signin', authentication);
+    if(payload) {
+      $user = payload;
+    }
   }
 
 
+  async function fetchFunction(url, body){
+    toast.pop();
+    isLoading = true;
+    const response = await fetch(url, {method: 'POST', headers: {'Content-type': 'application/json'},
+      body: JSON.stringify(body)});
+    const { payload, error } = await response.json();
+    isLoading = false;
+    if(payload) {
+      return { payload };
+    }
+    notify('error', error.message);
+    return { undefined }
+  }
 </script>
 
-<div class="w3-container parent">
-  {#if step === 0}
-   <Authentication on:registerAuthentication={registerAuthentication} />
-   {:else if step === 1}
-    <Detail on:registerUser={registerUser}/>
-  {:else if step === 2}
-    <Company on:registerCompany={registerCompany} />
-  {/if}
-</div>
+
+{#if isLoading}
+    <Loader/>
+{:else}
+  <div class="content parent">
+    {#if step === 0}
+    <Authentication bind:authentication  on:submit={registerAuthentication} />
+    {:else if step === 1}
+      <Detail bind:detail on:submit={() => step = 2}/>
+    {:else if step === 2}
+      <Company bind:company on:submit={registerCompany} />
+    {/if}
+  </div>
+{/if}
 
 <style>
   .parent :global(.error) {
     border: 1px solid red;
   }
+
 </style>

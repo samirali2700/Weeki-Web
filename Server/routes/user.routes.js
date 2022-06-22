@@ -8,40 +8,40 @@ userRouter
 .get('/getUser/:userId', checkParams( async function (req, res, params) {
     try{
         const { code, payload } = await GET_USER({ id: params.userId });
-        res.status(code).send(payload)
+        res.status(code).send({ payload: payload })
     }catch(e) {
-        res.status(e.code).send(e.error);
+        res.status(e.code).send({error: e.error});
     }
 }))
 .get('/getUsers/:companyId', checkParams( async function (req, res, params) {
     try{
         const { code, payload } = await GET_USERS({ id: params.companyId});
-        res.status(code).send(payload)
+        res.status(code).send({ payload: payload })
     }catch(e) {
-        res.status(e.code).send(e.error);
+        res.status(e.code).send({error: e.error});
     }
 }))
 .post('/createUser/:companyId/:userId', checkParams( async function (req, res, params)  {
     try{
         const { code, payload } = await CREATE_USER({ companyId: params.companyId, userId: params.userId, user: req.body  });
-        res.status(code).send(payload);
+        res.status(code).send({ payload: payload });
     }catch(e) {
-        res.status(e.code).send(e.error);
+        res.status(e.code).send({error: e.error});
     }
 }))
 .patch('/updateUser/:userId', checkParams( async function (req, res, params)  {
     try{        
         const {code, payload} = await UPDATE_USER({ id: params.userId, user:  req.body.user })
-        res.status(code).send(payload)
+        res.status(code).send({ payload: payload })
     }catch(e) {
-        res.status(e.code).send(e.error);
+        res.status(e.code).send({error: e.error});
     }
 }))
 .delete('/deleteUser/:userId', checkParams( async function (req, res, params)  {
     try{
 
     }catch(e) {
-        res.status(e.code).send(e.error);
+        res.status(e.code).send({error: e.error});
     }
 }));
 

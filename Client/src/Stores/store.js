@@ -18,6 +18,7 @@ export const isLoading = writable(false);
  * for now the solution will be hardcoded
  * and in the future the possibility to switch over to db is there
  */
+
 export const themes = writable([
     {
         "name": "default",
@@ -120,7 +121,12 @@ export const themes = writable([
     }
      
 ]);
-
+export const default_primary = derived(themes, ($themes) => {
+    return $themes.find(t => t.name === 'default').primary;
+})
+export const default_secondary = derived(themes, ($themes) => {
+    return $themes.find(t => t.name === 'default').secondary;
+})
 
 /**
  * Should the theme the user chose be stored in localStorage or in db?

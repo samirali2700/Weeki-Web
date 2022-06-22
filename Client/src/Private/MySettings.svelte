@@ -4,10 +4,10 @@
 
   import { user, isAdmin } from "../Stores/user";
 
-  import General from "../Components/MySettings/General.svelte";
-  import App from "../Components/MySettings/App.svelte";
+  import General from "./MySettings/General.svelte";
+  import App from "./MySettings/App.svelte";
 
-  let current = "app";
+  let current = "general";
   let selected = $theme;
 
   let playingTheme = "";
@@ -25,14 +25,6 @@
   let count = 0;
 
   function playTheme(e) {
-    //either true or false
-    //cannot be false without having been true
-    //false would mean to stop the ongoing play
-
-    //make sure themes is not empty | very unlikely
-    //and to clear the interval after there is no more themes in array
-    //the last is a custom theme
-
     if (e.detail) {
       playInterval = setInterval(() => {
         if (count < $themes.length - 1) {
@@ -51,7 +43,6 @@
     } else {
       clearInterval(playInterval);
     }
-
     count = 0;
     playingTheme = "";
     changeTheme();

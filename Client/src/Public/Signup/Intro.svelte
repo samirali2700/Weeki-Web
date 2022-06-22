@@ -6,10 +6,10 @@
     import { cubicOut } from 'svelte/easing';
 </script>
 
-  <div class="back" on:click={() =>  navigate(-1)}>
-    <TiArrowBackOutline />
-  </div>
-<div class="w3-animate-bottom">
+<div class="back" on:click={() =>  navigate(-1)}>
+  <TiArrowBackOutline />
+</div>
+<div class="content w3-animate-bottom">
     <div class="title">
       <h2 class="text">Hej!</h2>
       <p class="text">Hvad er du her for at lave i dag?</p>

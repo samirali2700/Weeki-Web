@@ -16,6 +16,9 @@ export const COMPANY_NOT_FOUND = "Virksomheden eksisterer ikke";
 export const EMPLOYEE_NOT_FOUND = "Medarbejderen eksisterer ikke";
 
 
+export const BAD_TOKEN = "Token kunne ikke verificeres"
+
+
 
 
 

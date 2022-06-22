@@ -1,16 +1,10 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
-
-    let company = {
+    export let company = {
         name: "Weeki",
         cvr: "4568743151",
         phone: "421545651",
     };
 
-    function registerCompany(){
-      dispatch('registerCompany', company);
-    }
 </script>
 
 <div class="w3-animate-bottom">
@@ -20,7 +14,7 @@
         Du er der næsten, sidste trin så kan du komme i gang med det samme!
       </p>
     </div>
-    <form on:submit|preventDefault={registerCompany}>
+    <form on:submit|preventDefault>
       <label>
         Virksomhed*
         <input bind:value={company.name} required class="w3-card-2 inputs" />

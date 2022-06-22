@@ -1,10 +1,10 @@
 <script>
     import Loader from "../Components/Loader.svelte";
     import { link } from "svelte-navigator";
-
-    
+    import PasswordInput from "../Components/PasswordInput.svelte";
+    import { user } from "../Stores/user";
     let isLoading = false;
-
+    import { toast } from '@zerodevx/svelte-toast';
       
     let email;
     let password;
@@ -18,14 +18,13 @@
       },
       body: JSON.stringify({ email: email, password: password }),
     };
-    const response = await fetch("/signin", options);
+    const response = await fetch("/auth/signin", options);
     const { payload, error} = await response.json();
-
     if(payload){
-    //    $user = payload;
+       $user = payload.user;
     } else {
       toast.pop()
-      toast.push(error, {
+      toast.push(error.message, {
           theme: {
             '--toastBackground': '#F56565',
             '--toastBarBackground': '#C53030'
@@ -34,11 +33,12 @@
     }
     isLoading = false;
   }
+
 </script>
 
 
 {#if isLoading}
-    <Loader/>
+    <Loader type={'Plane'}/>
 {:else}
     <div class="container w3-animate-zoom">
         <div class="content">
@@ -50,11 +50,10 @@
         <div class="content">
             <form on:submit|preventDefault={login}>
               <label for="email"> Brugernavn*</label>
-              <input id="email" name="email" bind:value={email} required />
+              <input class="w3-card-2 inputs" id="email" name="email" bind:value={email} required />
     
               <label for="password"> Adgangskode*</label>
-              <input id="password" type="password" bind:value={password} required />
-    
+              <PasswordInput  bind:password/>
               <input
                 type="submit"
                 style:height="45px"

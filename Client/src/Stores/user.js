@@ -20,6 +20,7 @@ export const loggedIn = derived(user, ($user) => {
 export const isAdmin = derived(([loggedIn, user]), ($value, set) => {
     if($value[0]){
         if($value[1].admin){
+            
              set(true);
         }
         else set(false);

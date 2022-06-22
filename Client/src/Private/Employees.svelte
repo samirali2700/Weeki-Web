@@ -1,45 +1,49 @@
 <script>
   import { fade, slide, fly, scale } from "svelte/transition";
-  import { Router, Route, link } from "svelte-routing";
 
+
+  import Overview from "./Employee/Overview.svelte";
   import AddEmployee from "./Employee/AddEmployee.svelte";
   import EditEmployee from "./Employee/EditEmployee.svelte";
   import SearchEmployee from "./Employee/SearchEmployee.svelte";
 
-  let list = [
-    { name: "add", displayname: "Tilføj", component: AddEmployee },
-    { name: "edit", displayname: "Redigere", component: EditEmployee },
-    { name: "search", displayname: "Søg", component: SearchEmployee },
-  ];
+  import { Router, Route, link, Link} from "svelte-navigator";
+  import Loader from "../Components/Loader.svelte";
+  import { secondary_color, primary_color } from "../Stores/store";
+  import { onMount } from "svelte";
+  import { navigate } from "svelte-navigator"
 
-  let selected = list[0];
+  export let location;
+  let loading = false;
 
-  $: selectedComponent = selected.component;
+  onMount(() => {
+    navigate('/employees/register')
+  });
 
-  function selectTab(name) {
-    selected = list.find((i) => i.name === name);
-  }
 </script>
 
-<div class="w3-container container w3-card-4" in:slide>
-  <h1>Medarbejder</h1>
-</div>
-<div class=" tab">
-  {#each list as item}
-    <span
-      class="w3-button"
-      class:current={selected.name === item.name}
-      on:click={() => {
-        selectTab(item.name);
-      }}>{item.displayname}</span
-    >
-  {/each}
-</div>
-<div class="content" />
+  <div class="w3-container container w3-card-4" in:slide>
+    <h1>Medarbejder</h1>
+  </div>
+  <div class=" tab">
+      <a class="w3-button w3-hover-light-gray" class:current={location.pathname === '/employees'} use:link href="/employees/">Oversigt</a>
+      <a class="w3-button w3-hover-light-gray" class:current={location.pathname === '/employees/register'} use:link href="/employees/register">Tilføj</a>
+      <a class="w3-button w3-hover-light-gray" class:current={location.pathname === '/employees/search'} use:link href="/employees/search">Søg</a>
+  </div>
 
-<div>
-  <svelte:component this={selectedComponent} />
-</div>
+  <div class="content parent">
+    {#if loading}
+    <div class="w3-border loader">
+      <Loader type={'BarLoader'} color={$primary_color}/>
+    </div>
+    {:else}
+    <Router primary={false}>
+        <Route path="/"><Overview/></Route>
+        <Route path="/register"><AddEmployee/></Route>
+    </Router>
+    {/if}
+  </div>
+
 
 <style>
   .container {
@@ -49,16 +53,28 @@
   .tab {
     margin: 15px 0;
     display: flex;
-    column-gap: 15px;
+    column-gap: 0;
     border-bottom: 1px solid #cecece;
   }
-  .tab > span {
+  .tab > a {
     width: 100px;
   }
   .current {
     border-bottom: 5px solid var(--secondary-color);
   }
   .content {
-    height: 750px;
+    height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .parent :global(.loader){
+    position: relative;
+    height: 100%;
+    width:100%;
+  }
+  .parent :global(.container){
+    width:100%; 
+    height:100%;
   }
 </style>

@@ -1,15 +1,8 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
-    import { toast } from '@zerodevx/svelte-toast';
-    
+    import PasswordInput from "../../../Components/PasswordInput.svelte";
+    export let authentication = {};
 
-    let authentication = {
-      email: "samirali@live.dk",
-      password: "123456789",
-    };
-
-    let rePass = "123456789";
+    let rePass = "";
     let match = true;
 
     function checkMatch() {
@@ -21,11 +14,7 @@
         }
     } 
   }
-  function registerUser (){
-    if(match){
-      dispatch("registerAuthentication", authentication);
-    }
-  }
+
 </script>
 
 <div class="w3-animate-bottom">
@@ -33,42 +22,27 @@
       <h2>Opret en ny bruger</h2>
       <p>Først har vi brug for din login oplysninger</p>
     </div>
-    <form on:submit|preventDefault={registerUser}>
+    <form on:submit|preventDefault>
       <label>
-        Email*
+        E-mail*
         <input
           type="email"
           bind:value={authentication.email}
           class="w3-card-2 inputs"
-          placeholder="Efternavn inputs"
           required
         />
       </label>
-      <label>
-        Adgangskode*
-        <input
-          type="password"
-          bind:value={authentication.password}
-          on:input={checkMatch}
-          required
-          class="w3-card-2 inputs"
-        />
-      </label>
-      <label>
-        Bekræft Adgangskode*
-        <input
-          type="password"
-          bind:value={rePass}
-          on:input={checkMatch}
-          required
-          class="w3-card-2 inputs"
-          class:error={!match}
-        />
-      </label>
+      <label for="password">Adgangskode*</label>
+      <PasswordInput error={false}  bind:password={authentication.password} on:input={checkMatch}/>
+      
+      <label for='re-password'>Bekræft Adgangskode*</label>
+      <PasswordInput id='re-password' error={!match}  bind:password={rePass} on:input={checkMatch}/>
+
       <input
         type="submit"
         value="Næste Trin"
         class="w3-button w3-left-align button inputs"
+        disabled={!match}
       />
     </form>
   </div>

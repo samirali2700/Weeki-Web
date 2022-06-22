@@ -1,18 +1,13 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
-
-
-    let user = {
+    export let detail = {
         firstname: 'Ali',
         lastname: 'Chouikhi',
         phone: '25323150',
-        pb: 'https://i.pinimg.com/originals/d9/56/9b/d9569bbed4393e2ceb1af7ba64fdf86a.jpg'
+        pb: 'https://i.pinimg.com/originals/d9/56/9b/d9569bbed4393e2ceb1af7ba64fdf86a.jpg',
+        admin: true
     };
 
-    async function registerUser() {
-        dispatch('registerUser',  user);
-    } 
+
 </script>
 
 <div class="w3-animate-bottom">
@@ -20,10 +15,10 @@
       <h2>Opret en ny bruger</h2>
       <p>Nu har vi brug for dine personlige oplysninger</p>
     </div>
-    <form on:submit|preventDefault={registerUser}>
+    <form on:submit|preventDefault>
         <label> Fornavn* 
             <input
-            bind:value={user.firstname}
+            bind:value={detail.firstname}
             class="w3-card-2 inputs"
             placeholder="Fornavn"
             required
@@ -31,7 +26,7 @@
         </label>
         <label> Efternavn*
             <input
-            bind:value={user.lastname}
+            bind:value={detail.lastname}
             class="w3-card-2 inputs"
             placeholder="Efternavn"
             required
@@ -39,14 +34,14 @@
         </label>
         <label> Mobil nummer 
             <input
-            bind:value={user.phone}
+            bind:value={detail.phone}
             class="w3-card-2 inputs"
             placeholder="Mobil nummer"
           />
         </label>
         <label> Profil billede
             <input
-            bind:value={user.pb}
+            bind:value={detail.pb}
             class="w3-card-2 inputs"
             placeholder="link til et profil billede"
           />

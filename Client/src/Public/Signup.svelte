@@ -10,7 +10,7 @@
 
 <Router primary={false}>
   <div class="container">
-      <div class="content signup-parent">
+      <div class="content signup-parent ">
         <Route path="/"><Intro/></Route>
         <Route path="create"><Create/></Route>
         <Route path="join"><Join/></Route>
@@ -20,7 +20,14 @@
 
 <style>
     .container {
-        position: relative;
+      position: relative;
+    }
+    .content{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height:100%;
     }
     .signup-parent :global(.card) {
       border: 1px solid #dddddd;
@@ -43,9 +50,7 @@
       user-select: none;
       font-family: "Allerta Stencil", Sans-serif;
     }
-    .signup-parent :global(.content) {
-      width: 100%;
-    }
+ 
     .signup-parent :global(.inputs) {
       margin-bottom: 15px;
       width: 100%;

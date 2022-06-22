@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "sirv-cli": "^2.0.0",
+    "svelte-clipboard": "^1.0.0",
     "svelte-icons": "^2.1.0",
     "svelte-loading-spinners": "^0.1.7",
     "svelte-navigator": "^3.1.6",

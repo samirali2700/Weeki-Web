@@ -13,6 +13,6 @@ import ProtectedRoute from "./Guard/PrivateRoute.svelte";
     <ProtectedRoute path="/" component={Home} />
     <ProtectedRoute path="/schedule" component={Schedule} />
     <ProtectedRoute path="/messages" component={Messages} />
-    <ProtectedRoute path="/employees" component={Employees} />
+    <ProtectedRoute path="/employees/*" component={Employees} />
     <ProtectedRoute path="/mysettings" component={MySettings} />
 </Private>

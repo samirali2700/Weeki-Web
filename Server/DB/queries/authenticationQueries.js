@@ -12,6 +12,9 @@ export const UPDATE_PASSWORD = (id, password) => {
 export const DELETE_USER = (id) => {
     return authentication.deleteOne({ _id: id });
 }
+export const GET_COUNT = async (email) => {
+    return authentication.countDocuments({email: email});
+}
 
 // return new Promise(async (resolve, reject) => {
 //     try{
