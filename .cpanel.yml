@@ -1,0 +1,9 @@
+---
+  deployment:
+  tasks:
+    - export DEPLOYPATH=/home/weekidk/public_html/
+    - /bin/cp -R dev $DEPLOYPATH
+    - /bin/cp app.js $DEPLOYPATH
+    - /bin/cp package.json $DEPLOYPATH
+    - /bin/cp package-lock.json $DEPLOYPATH
+
