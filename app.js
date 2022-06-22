@@ -43,11 +43,11 @@ else {
 app.get('*', (req,res) => {res.redirect('/')})
 
 
-import { authorize } from "./Server/utils/validation.js";
-import authRouter from "./Server/routes/auth.routes.js";
-import userRouter from "./Server/routes/user.routes.js";
-import companyRouter from "./Server/routes/company.routes.js";
-import { connect } from "./Server/DB/mongoDBconnect.js"
+// import { authorize } from "./Server/utils/validation.js";
+// import authRouter from "./Server/routes/auth.routes.js";
+// import userRouter from "./Server/routes/user.routes.js";
+// import companyRouter from "./Server/routes/company.routes.js";
+// import { connect } from "./Server/DB/mongoDBconnect.js"
 
 
 // //io socket connection
