@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Gluten&display=swap');
-
+:root {
+    --toastBackground: #abcdef;
+    --toastColor: #fff;
+    --toastHeight: 80px;
+	--toastWidth: 50vw;
+	--toastContainerTop: auto;
+    --toastContainerRight: auto;
+    --toastContainerLeft: 0;
+}
 
 *{
 	margin:0;

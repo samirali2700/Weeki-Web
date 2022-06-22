@@ -1,6 +1,7 @@
 <script>
   export let isAdmin;
   export let user;
+
 </script>
 
 <div class="container">
@@ -16,16 +17,7 @@
   <input readonly value="Weeki" style:border="none" />
 
   <p>Navn</p>
-  <input type="text" value={user.name || "ikke registeret"} />
-
-  <p>Email</p>
-  <input type="email" value={user.email} />
-
-  <p>Agangskode</p>
-  <input type="password" value={user.password} />
-
-  <p>Mobil nummer</p>
-  <input type="number" value={user.phone} />
+  <input type="text" value={user.firstname + " "+user.lastname || "ikke registeret"} />
 </div>
 
 <style>

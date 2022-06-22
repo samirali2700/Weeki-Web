@@ -7,7 +7,8 @@
   import { isAdmin, user } from "../Stores/user";
   import { page } from "../Stores/store";
 
-  import { navigate } from "svelte-routing";
+  import { navigate } from "svelte-navigator";
+  import { onMount } from "svelte";
 
   import {
     primary_color,
@@ -15,6 +16,10 @@
     text_color,
     isLoading,
   } from "../Stores/store";
+
+  onMount(() => {
+    navigate($page);
+  })
 
   $: styles = {
     "primary-color": $primary_color,
@@ -29,11 +34,7 @@
 
   async function signout() {
     const response = await fetch("/signout", { method: "DELETE" });
-
-    //201 Ok
     if (response.status === 201) {
-      //reset the page state,
-      //to not get an access denied or papge not found error
       $page = "/";
       $user = {};
     }

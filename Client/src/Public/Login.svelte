@@ -1,106 +1,79 @@
 <script>
-  import { link } from "svelte-routing";
-  import { slide } from "svelte/transition";
+    import Loader from "../Components/Loader.svelte";
+    import { link } from "svelte-navigator";
+    import PasswordInput from "../Components/PasswordInput.svelte";
+    import { user } from "../Stores/user";
+    let isLoading = false;
+    import { toast } from '@zerodevx/svelte-toast';
+      
+    let email;
+    let password;
 
-  import { isLoading } from "../Stores/store";
-  import { user } from "../Stores/user";
-
-  let email;
-  let password;
-
-  async function login() {
-    $isLoading = true;
+    async function login() {
+    isLoading = true;
     const options = {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email: email, password: password }),
     };
-    const response = await fetch("/signin", options);
-    const data = await response.json();
-
-    if (response.status !== 403) {
-      $user = data;
+    const response = await fetch("/auth/signin", options);
+    const { payload, error} = await response.json();
+    if(payload){
+       $user = payload.user;
     } else {
-      toastr.error(data.error, "Fejl", { positionClass: "toast-top-left" });
+      toast.pop()
+      toast.push(error.message, {
+          theme: {
+            '--toastBackground': '#F56565',
+            '--toastBarBackground': '#C53030'
+          }
+        })
     }
-    $isLoading = false;
+    isLoading = false;
   }
+
 </script>
 
-<div class="container w3-threequarter" in:slide>
-  <div class="content">
-    <div class="intro">
-      <h1 class="text">Velkommen Tilbage</h1>
-      <p class="text">Login og planlæg din vagtplan nemt og hutigt!</p>
-    </div>
-    <div>
-      <form on:submit|preventDefault={login}>
-        <label for="email"> Brugernavn*</label>
-        <input id="email" name="email" bind:value={email} required />
 
-        <label for="password"> Adgangskode*</label>
-        <input id="password" type="password" bind:value={password} required />
-
-        <input
-          type="submit"
-          style:height="45px"
-          style:margin-top="35px"
-          value="Login"
-          class="w3-button w3-round-small w3-hover-black w3-left-align"
-        />
-      </form>
+{#if isLoading}
+    <Loader type={'Plane'}/>
+{:else}
+    <div class="container w3-animate-zoom">
+        <div class="content">
+            <div class="intro">
+                <h1 class="text">Velkommen Tilbage</h1>
+                <p class="intro-text text">Login og planlæg din vagtplan nemt og hutigt!</p>
+            </div>
+        </div>
+        <div class="content">
+            <form on:submit|preventDefault={login}>
+              <label for="email"> Brugernavn*</label>
+              <input class="w3-card-2 inputs" id="email" name="email" bind:value={email} required />
+    
+              <label for="password"> Adgangskode*</label>
+              <PasswordInput  bind:password/>
+              <input
+                type="submit"
+                style:height="45px"
+                style:margin-top="35px"
+                value="Login"
+                class="w3-button w3-round-small w3-hover-black w3-left-align"
+              />
+            </form>
+        </div>
+        <div class="content">
+            <p class="w3-section">
+              Har du ikke en bruger? 
+              <span>
+                <a href="/signup" use:link>Registrer din Virksomhed her</a></span>
+            </p>
+        </div>
     </div>
-    <div>
-      <p class="w3-section">
-        Har du ikke en bruger? <span
-          ><a href="/signup" use:link>Registrer din Virksomhed her</a>
-        </span>
-      </p>
-    </div>
-  </div>
-</div>
+{/if}
 
 <style>
-  h1 {
-    font-family: "Gluten", cursive;
-    font-weight: bold;
-  }
-  a {
-    color: #0088ff;
-  }
-  label {
-    font-size: 12px;
-  }
-
-  .intro > p {
-    color: #808080;
-  }
-  .intro {
-    margin-bottom: 25px;
-  }
-  .container {
-    margin: 0 7%;
-    height: fit-content;
-    max-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .content {
-    width: 100%;
-  }
-  input {
-    margin-bottom: 15px;
-  }
-  input[type="submit"] {
-    background-color: #0088ff;
-    color: #fff;
-    margin-top: 25px;
-  }
-  form {
-    display: grid;
-    row-gap: 5px;
-  }
 </style>
+
+

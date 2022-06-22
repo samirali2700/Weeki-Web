@@ -1,5 +1,6 @@
-import { app, db } from "../configs/firebase-admin.js";
+import { firestore, auth } from "../DB/firebase-admin.js";
 import { Router } from "express";
+
 
 import sendRequest from "../Auth/firebaseRest.js";
 
@@ -8,7 +9,7 @@ const authRoute = Router();
 const expiresIn = ( 24 * 60 * 60 * 1000);   // 1 days
 
 
-const companies = app.firestore().collection('companies');
+const companies = firestore.collection('companies');
 
 // const snap = await companies.where('name','==', 'Weeki').get();
 // const snap = await companies.orderBy('cvr', 'desc').limit(1).get();
@@ -16,21 +17,13 @@ const companies = app.firestore().collection('companies');
 async function createSession(req, res, user) {
     try{
         const response = await sendRequest('SIGNIN', user);
-      
-     
-
-        const verified = await app.auth().verifyIdToken(response.idToken, true);
+        const verified = await auth.verifyIdToken(response.idToken, true);
         //new Date(verified.iat*1000).toString()
         const now = new Date().getTime()
 
         // if((now - verified.iat*1000) < (5 * 60 * 1000)){  // as long as request to server happens before 5 min runs out
 
-             /**
-             * Fireabse admin SDK
-             * createSessionCookie() method from the admin sdk will create a token that user info can be extracted from
-             * expiration interval 5 minutes to 2 weeks.
-             */
-            const sessionCookie = await app.auth().createSessionCookie(response.idToken, { expiresIn /** A Day */});
+            const sessionCookie = await auth.createSessionCookie(response.idToken, { expiresIn /** A Day */});
             res.cookie('session_cookie', sessionCookie,  {httpOnly: true, secure: false, sameSite: 'strict', maxAge: expiresIn});
             
             const returnObject = {
@@ -60,7 +53,7 @@ authRoute
     if(sessionCookie !== undefined){
         try{
             // arg2, check state, is account deleted? disabled? accessRevoked?
-            const result = await app.auth().verifySessionCookie(sessionCookie, true);
+            const result = await auth.verifySessionCookie(sessionCookie, true);
       
 
             //Do something with issuedAt, and expiration
@@ -127,7 +120,7 @@ authRoute
              * extra: a rule can be addedd to only allow disallow any write, since the admin bypasses any rules
              */
 
-            const result = await app.auth().createUser({
+            const result = await auth.createUser({
                 email: user.email,
                 password: user.password,
                 displayName: user.firstname + " "+user.lastname,  //name
@@ -159,7 +152,7 @@ authRoute
 
             //waiting to set the customerClaim until unique key is regenerated and company is created
             //the one created the company will always be a admin, and can later be changed or add to admin
-            await app.auth().setCustomUserClaims(result.uid, {admin: true});
+            await auth.setCustomUserClaims(result.uid, {admin: true});
 
             await createSession(req, res, user);
 
@@ -182,8 +175,8 @@ authRoute
     const sessionCookie = req.cookies.session_cookie || '';
     try{
       
-        const result = await app.auth().verifySessionCookie(sessionCookie);
-        await app.auth().revokeRefreshTokens(result.sub);
+        const result = await auth.verifySessionCookie(sessionCookie);
+        await auth.revokeRefreshTokens(result.sub);
 
         res.clearCookie('session_cookie');
         res.status(201).send();

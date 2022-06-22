@@ -1,6 +1,7 @@
 <script>
   export let size;
 
+
   //the logo is going to be in 3 sizes, additionaly size can be added later
   //small -footer
   //medium - navBar
@@ -37,7 +38,7 @@
     .join(";");
 </script>
 
-<div id="logo" style={logoStyles}>
+<div id="logo" style={logoStyles} class="w3-animate-zoom" >
   <p><span>W</span>eeki</p>
 </div>
 

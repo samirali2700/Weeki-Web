@@ -1,5 +1,5 @@
 <script>
-  import { Link, link, navigate } from "svelte-routing";
+  import { Link, link, navigate } from "svelte-navigator";
   import { fade, slide, fly, scale } from "svelte/transition";
 
   //store
@@ -63,8 +63,7 @@
 
   function goTo(e) {
     show = false;
-    // $page = e.detail.endpoint;
-    // navigate($page);
+    navigate($page);
   }
 </script>
 
