@@ -1,109 +1,55 @@
 <script>
-  import { slide, scale } from "svelte/transition";
-  import { themes, theme } from "../Stores/store";
+	import { slide } from 'svelte/transition';
 
-  import { user, isAdmin } from "../Stores/user";
+	import General from './MySettings/General.svelte';
+	import MyAccount from './MySettings/MyAccount.svelte';
+	import App from './MySettings/App.svelte';
 
-  import General from "./MySettings/General.svelte";
-  import App from "./MySettings/App.svelte";
+	import { Router, Route, link, useLocation } from 'svelte-navigator';
 
-  let current = "general";
-  let selected = $theme;
-
-  let playingTheme = "";
-  let playingThemeName = "";
-
-  function setTheme() {
-    $theme = playingThemeName;
-  }
-
-  function changeTheme() {
-    localStorage.setItem("theme", selected);
-    $theme = selected;
-  }
-  let playInterval;
-  let count = 0;
-
-  function playTheme(e) {
-    if (e.detail) {
-      playInterval = setInterval(() => {
-        if (count < $themes.length - 1) {
-          const theme = $themes[count];
-          count++;
-          playingTheme = theme["display-name"];
-          playingThemeName = theme.name;
-          setTheme();
-        } else {
-          clearInterval(playInterval);
-          count = 0;
-          playingTheme = "";
-          changeTheme();
-        }
-      }, 2000);
-    } else {
-      clearInterval(playInterval);
-    }
-    count = 0;
-    playingTheme = "";
-    changeTheme();
-  }
+	let location = useLocation();
+	$: sessionStorage.setItem('lastVisited', $location.pathname);
 </script>
 
-<div class="w3-container container w3-card-4" in:slide>
-  <h1>Mine indstillinger</h1>
+<div class="header w3-card-4" in:slide>
+	<h1>Mine indstillinger</h1>
 </div>
+
 <div class="tab">
-  <span
-    class=" w3-button w3-hover-light-grey"
-    class:active={current === "general"}
-    on:click={() => (current = "general")}>General</span
-  >
-  <span
-    class="w3-button w3-hover-light-grey"
-    class:active={current === "app"}
-    on:click={() => (current = "app")}>App</span
-  >
-  <span
-    class="w3-button w3-hover-light-grey"
-    class:active={current === "mere"}
-    on:click={() => (current = "mere")}>mere</span
-  >
+	<a
+		href="/mysettings/"
+		class="tab-button"
+		class:active={$location.pathname === '/mysettings'}
+		use:link>General</a
+	>
+	<a
+		href="/mysettings/myaccount"
+		class="tab-button"
+		class:active={$location.pathname === '/mysettings/myaccount'}
+		use:link>Min Konto</a
+	>
+	<a
+		href="/mysettings/app"
+		class="tab-button"
+		class:active={$location.pathname === '/mysettings/app'}
+		use:link>App</a
+	>
 </div>
 
 <div class="content-container">
-  {#if current === "general"}
-    <div in:slide>
-      <General isAdmin={$isAdmin} user={$user} />
-    </div>
-  {:else if current === "app"}
-    <div in:slide>
-      <App
-        themes={$themes}
-        bind:selected
-        bind:playingTheme
-        on:click={changeTheme}
-        on:playTheme={playTheme}
-      />
-    </div>
-  {:else if current === "mere"}
-    <h1>mere</h1>
-  {/if}
+	<Router primary={false}>
+		<Route path="/">
+			<div class="content" in:slide><General /></div></Route
+		>
+		<div class="content" in:slide>
+			<Route path="/myaccount">
+				<MyAccount />
+			</Route>
+		</div>
+		<Route path="/app">
+			<div class="content" in:slide>
+				<App />
+			</div></Route
+		>
+	</Router>
 </div>
-
-<style>
-  .container {
-    background-color: var(--secondary-color, ligthgrey);
-    color: var(--text-color, ligthgrey);
-  }
-
-  .tab {
-    margin: 25px 0 0 25px;
-    border-bottom: 1px solid #cecece;
-  }
-  .active {
-    border-bottom: 5px solid var(--secondary-color, ligthgrey);
-  }
-  .content-container {
-    padding: 25px 25px 25px 25px;
-  }
-</style>

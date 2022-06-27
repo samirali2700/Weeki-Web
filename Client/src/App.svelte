@@ -1,38 +1,30 @@
 <script>
-  import Loader from "./Components/Loader.svelte";
-  import Routes from "./Routes/Routes.svelte";
+	import { onMount } from 'svelte';
 
-  import { onMount } from "svelte";
+	import Routes from './Routes/Routes.svelte';
+	import { user, isLoading } from './Stores/user';
 
-  import { SvelteToast } from "@zerodevx/svelte-toast";
-  import { primary_color, secondary_color, default_primary, default_secondary } from "./Stores/store";
-  import { user, loggedIn } from "./Stores/user";
+	import { authGet } from './utils/fetches';
+	import { notifyError, notifyInfo } from './utils/notify';
 
-
-  let state = "init";
-
-  $: primary = $loggedIn ? $primary_color : $default_primary;
-  $: secondary = $loggedIn ? $secondary_color: $default_secondary;
-
-
-  onMount(async () => {
-    const response = await fetch('/auth');
-    const { payload } = await response.json();
-    if(payload) {
-      $user = payload.user;
-    }
-    state = "ready";
-  });
-
-  const options = {
-    reversed: true, intro: { x: -200 } 
-  };
-
+	onMount(async () => {
+		$isLoading = true;
+		const { payload } = await authGet(null);
+		if (payload) {
+			$user = payload.user;
+		} else {
+			sessionStorage.removeItem('lastVisited');
+		}
+		$isLoading = false;
+	});
 </script>
-<SvelteToast {options} />
-{#if state === "init"}
-  <Loader styles={{ outer: primary, center: secondary }} />
-{:else}
-  <Routes />
-{/if}
 
+<svelte:head>
+	<script
+		id="CookieDeclaration"
+		src="https://consent.cookiebot.com/c04f56d2-2bf3-4b95-9043-5f1cd5e904ed/cd.js"
+		type="text/javascript"
+		async></script>
+</svelte:head>
+
+<Routes />

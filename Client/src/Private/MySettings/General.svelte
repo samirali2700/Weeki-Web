@@ -1,32 +1,53 @@
 <script>
-  export let isAdmin;
-  export let user;
+	import { onMount } from 'svelte';
+	import { user, isAdmin } from '../../Stores/user';
+	import { apiGet } from '../../utils/fetches';
+	import { notifyError } from '../../utils/notify';
+	import { GET_COMPANY } from '../../utils/endpoints';
+	import GoUnverified from 'svelte-icons/go/GoUnverified.svelte';
+	import GoVerified from 'svelte-icons/go/GoVerified.svelte';
+	let company = {};
+	let employees = [];
 
+	onMount(async () => {
+		const { payload, error } = await apiGet(GET_COMPANY($user.companyId));
+		if (error) {
+			notifyError(error.message);
+		} else {
+			company = payload.company;
+			employees = company.employees;
+		}
+	});
 </script>
 
-<div class="container">
-  {#if isAdmin}
-    <p>Administrator</p>
-    <input value="Ja" style:border="none" />
+<div class="grid-container">
+	{#if isAdmin}
+		<p>Administrator</p>
+		<p class="value">Ja</p>
 
-    <p>Medarbejder</p>
-    <input value="0" style:border="none" />
-  {/if}
+		<p>Medarbejder</p>
+		<p class="value">{employees.length}</p>
+	{/if}
 
-  <p>Virksomhed</p>
-  <input readonly value="Weeki" style:border="none" />
+	<p>Virksomhed</p>
+	<p class="value">{company.name}</p>
 
-  <p>Navn</p>
-  <input type="text" value={user.firstname + " "+user.lastname || "ikke registeret"} />
+	<p>Verficeret</p>
+
+	<div class="center-container">
+		<div class="icon-small">
+			{#if $user.verified}
+				<GoVerified />
+			{:else}
+				<GoUnverified />
+			{/if}
+		</div>
+	</div>
+	{#if !$user.verified}
+		<div class="grid-full-column">
+			<p class="info-text">Har du ikke modtaget verificerings mail?</p>
+			<p class="info-text">Klik på knappen nedenfor for at tilsendt en ny mail</p>
+		</div>
+		<button class="button">Send verificerings mail</button>
+	{/if}
 </div>
-
-<style>
-  .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    row-gap: 10px;
-  }
-  input {
-    text-align: center;
-  }
-</style>

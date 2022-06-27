@@ -1,4 +1,5 @@
 .env
+.vscode
 node_modules
 Server/configs
 Server/DB/tokens
