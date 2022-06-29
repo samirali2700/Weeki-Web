@@ -1,4 +1,6 @@
 import { Router } from 'express';
+const companyRouter = Router();
+
 import {
 	GET_COMPANY,
 	GET_EMPLOYEE,
@@ -13,13 +15,10 @@ import {
 } from '../service/company.service.js';
 
 import { checkParams } from '../utils/validation.js';
-const companyRouter = Router();
-
 import {
 	insertInvitation,
 	getInvitation,
 	deleteInvitation,
-	getAll,
 } from '../DB/invite/inviteQueries.js';
 
 companyRouter

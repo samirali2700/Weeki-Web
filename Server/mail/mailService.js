@@ -14,7 +14,6 @@ const mail_icon_path = path.resolve(__dirname, 'images', 'mail.png');
 let transporter;
 async function main() {
 	transporter = nodemailer.createTransport({
-		//transport options
 		host: 'mail.weeki.dk',
 		port: 465,
 		secure: true,

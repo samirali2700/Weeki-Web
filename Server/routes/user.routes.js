@@ -1,6 +1,7 @@
 import { Router } from 'express';
+const userRouter = Router();
+
 import {
-	DELETE_USER,
 	GET_USER,
 	GET_USERS,
 	UPDATE_USER,
@@ -10,8 +11,6 @@ import {
 } from '../service/user.service.js';
 
 import { checkParams } from '../utils/validation.js';
-
-const userRouter = Router();
 
 userRouter
 	.get('/auth/users/profile/login', async (req, res) => {
@@ -87,15 +86,6 @@ userRouter
 		} catch (e) {
 			res.status(e.code).send({ error: e.error });
 		}
-	})
-	.delete(
-		'/users/:userId',
-		checkParams(async function (req, res, params) {
-			try {
-			} catch (e) {
-				res.status(e.code).send({ error: e.error });
-			}
-		})
-	);
+	});
 
 export default userRouter;

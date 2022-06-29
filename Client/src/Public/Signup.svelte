@@ -1,5 +1,5 @@
 <script>
-	import { Router, Route, navigate } from 'svelte-navigator';
+	import { Router, Route } from 'svelte-navigator';
 
 	import Intro from './Signup/Intro.svelte';
 	import Create from './Signup/Create.svelte';
@@ -26,8 +26,8 @@
 
 	let creatorId = '';
 
-	let email = '';
-	let companyName = '';
+	let email = 'samirali@live.dk';
+	let companyName = 'MinVirk';
 	let companyId = '';
 	let inProgress = false;
 

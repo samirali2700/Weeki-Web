@@ -72,7 +72,7 @@ export const CREATE_USER = async ({ companyId, userId, user, email }) => {
 				streetnumber: '',
 				zip: '',
 			};
-			const result = await ADD_USER(user);
+			await ADD_USER(user);
 			const data = {
 				type: 'register_confirm',
 				to: email,
@@ -149,7 +149,6 @@ export const DELETE_USERS = ({ ids }) => {
 				});
 			}
 		} catch (e) {
-			console.log(e);
 			reject({ code: INTERNAL_ERROR_CODE, error: { message: UNKNOWN } });
 		}
 		reject({ code: NOT_FOUND_CODE, error: { message: USER_NOT_FOUND } });

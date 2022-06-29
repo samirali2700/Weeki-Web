@@ -1,11 +1,15 @@
 import { authentication } from '../collections.js';
 
 export const CREATE_AUTHENTICATION = async (email, password) => {
-	return authentication.insertOne({
-		email: email,
-		password: password,
-		createdAt: new Date().getTime(),
-	});
+	return authentication.insertOne(
+		{
+			email: email,
+			password: password,
+		},
+		{
+			$currentDate: { createdAt: { $type: 'timestamp' } },
+		}
+	);
 };
 export const GET_AUTHENTICATION = (email) => {
 	return authentication.findOne(
@@ -20,7 +24,10 @@ export const FETCH_LOGIN = (_id) => {
 	);
 };
 export const UPDATE_PASSWORD = (id, password) => {
-	return authentication.updateOne({ _id: id }, { $set: { password: password } });
+	return authentication.updateOne(
+		{ _id: id },
+		{ $set: { password: password }, $currentDate: { modifiedAt: true } }
+	);
 };
 export const REMOVE_AUTHENTICATION = (id) => {
 	return authentication.deleteOne({ _id: id });

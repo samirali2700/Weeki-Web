@@ -1,21 +1,8 @@
-import { derived, writable, readable, get } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 
-/**
- * This will be a general store for the app
- * app specific configuration
- * like, theme current page
- */
-
-//page either lastvisited from session if exist, or default home page '/'
 export const page = writable(sessionStorage.getItem('lastVisited') || '/');
 
 export const isLoading = writable(false);
-
-/**
- * Save in db? or hardcode the themes?
- * for now the solution will be hardcoded
- * and in the future the possibility to switch over to db is there
- */
 
 export const themes = writable([
 	{
@@ -125,17 +112,9 @@ export const default_secondary = derived(themes, ($themes) => {
 	return $themes.find((t) => t.name === 'default').secondary;
 });
 
-/**
- * Should the theme the user chose be stored in localStorage or in db?
- * the easiest and fastest solution is localStorage
- * but to have to choose a theme again if the localStorage is deleted
- * or loggedIn from somewhere different from usual
- * is not something i would like, personaly, but for now the theme will be stored in local
- */
 localStorage.setItem('theme', 'default');
 export const theme = writable('default');
 
-//derive primary and seconday colors from current theme and themes list
 export const primary_color = derived([theme, themes], ($value, set) => {
 	set($value[1].find((c) => c.name === $value[0]).primary || '#000');
 });

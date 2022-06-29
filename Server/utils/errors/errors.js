@@ -12,6 +12,7 @@ export const EMAIL_NOT_FOUND = 'E-mail eksisterer ikke';
 export const USER_NOT_FOUND = 'Bruger eksisterer ikke';
 export const COMPANY_NOT_FOUND = 'Virksomheden eksisterer ikke';
 export const EMPLOYEE_NOT_FOUND = 'Medarbejderen(e) eksisterer ikke';
+export const POSTS_NOT_FOUND = 'Opslag(e) ikke fundet';
 
 export const BAD_TOKEN = 'Token kunne ikke verificeres';
 export const NOT_AUTHROIZED = 'Du har ikke adgang til ressourcen';

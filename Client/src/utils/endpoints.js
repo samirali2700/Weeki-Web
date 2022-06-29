@@ -1,18 +1,22 @@
-export const GET_COMPANY = (companyId) => 'auth/companies/' + companyId;
-export const GET_EMPLOYEES = () => 'auth/employees/';
-export const GET_EMPLOYEE = (employeeId) => 'auth/employees/' + employeeId;
+const authEndpoint = 'auth/';
 
-export const GET_INVITATION_STATUS = () =>
-	'invitations/registrationToken/status';
+export const GET_COMPANY = (companyId) =>
+	authEndpoint + 'companies/' + companyId;
+export const GET_EMPLOYEES = () => authEndpoint + 'employees/';
+export const GET_EMPLOYEE = (employeeId) =>
+	authEndpoint + 'employees/' + employeeId;
+
+const invitationEndpoint = 'invitations/registrationToken/';
+export const GET_INVITATION_STATUS = () => invitationEndpoint + 'status';
 export const GET_INVITATION_VALIDATION = (token) =>
-	'invitations/registrationToken/validation/' + token;
+	invitationEndpoint + 'validation/' + token;
 export const GET_INVITATION_TOKEN = (email) =>
-	'auth/invitations/registrationToken/' + email;
+	'auth/' + invitationEndpoint + email;
 
 export const POST_INVITATION_VALIDATION = (type) =>
-	'invitations/registrationToken/validation?type=' + type;
+	invitationEndpoint + 'validation?type=' + type;
 export const POST_INVITATION_TOKEN = (email) =>
-	'auth/invitations/registrationToken/' + email;
+	'auth/' + invitationEndpoint + email;
 
 export const POST_COMPANY = (creatorId) => 'companies/' + creatorId;
 export const POST_EMPLOYEE = (companyId) => 'employees/' + companyId;
@@ -30,6 +34,12 @@ export const POST_USER = ({ companyId, userId }) =>
 export const PATCH_USER = () => 'auth' + userEndpoint;
 export const DELETE_USER = (userId) => 'auth' + userEndpoint + userId;
 
-export const GET_LOGIN = () => 'auth/users/profile/login';
+export const GET_LOGIN = () => 'auth' + userEndpoint + 'profile/login';
 export const SIGNIN = () => 'signin';
 export const SIGNUP = () => 'signup';
+
+const postEndpoint = '/posts/';
+
+export const GET_POSTS = () => 'auth' + postEndpoint;
+export const POST_POST = () => 'auth' + postEndpoint;
+export const DELETE_POST = (postId) => 'auth' + postEndpoint + postId;

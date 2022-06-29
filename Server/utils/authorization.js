@@ -1,4 +1,3 @@
-import { verifyToken } from './tokens.js';
 import { ID } from '../DB/mongoDBconnect.js';
 import { AUTHENTICATE } from '../service/authenticate.service.js';
 import { UNAUTHORIZED_CODE } from './errors/statusCodes.js';
@@ -11,7 +10,6 @@ export const auth = (fn) => {
 		fn(req, res, { accessToken, refreshToken }, next);
 	};
 };
-
 export const authorize = auth(async function (
 	req,
 	res,
@@ -26,6 +24,35 @@ export const authorize = auth(async function (
 		await checkAuthentication(req, res, next, accessToken, refreshToken);
 	}
 });
+export const socketAuthenticate = async (socket, {}, next) => {
+	try {
+		const { payload } = await getAuthentication({
+			accessToken: socket.cookies.accessToken,
+			refreshToken: socket.cookies.refreshToken,
+			type: 'socket',
+		});
+		socket.user = payload;
+		next();
+	} catch (e) {
+		next(new Error(e.error));
+	}
+};
+
+async function getAuthentication({ accessToken, refreshToken, type }) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const { code, tokens, payload } = await AUTHENTICATE({
+				accessToken,
+				refreshToken,
+				type,
+			});
+			resolve({ code: code, payload: payload.user, tokens: tokens });
+		} catch (e) {
+			reject({ code: e.code, error: e.error });
+		}
+	});
+}
+
 async function checkAuthentication(req, res, next, accessToken, refreshToken) {
 	try {
 		const { code, tokens, payload } = await AUTHENTICATE({

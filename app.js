@@ -1,78 +1,82 @@
 import 'dotenv/config';
 
 import express from 'express';
-import http from 'http';
-import cookieParser from 'cookie-parser';
-
 const app = express();
-const server = http.createServer(app);
 
-import path from 'path';
+import cookieParser from 'cookie-parser';
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-if (process.env.NODE_ENV === 'dev') {
-	app.use(express.static(path.resolve('./Client/public')));
-
-	try {
-		await connect();
-		server.listen(process.env.PORT, () => {
-			console.log('app listening on port', server.address().port);
-		});
-	} catch (e) {
-		console.log('could not connect to db');
-	}
-} else {
+import path from 'path';
+if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.resolve('./dev')));
+} else {
+	app.use(express.static(path.resolve('./Client/public')));
+}
+
+import http from 'http';
+const server = http.createServer(app);
+
+import { Server } from 'socket.io';
+const io = new Server(server);
+
+import { connect } from './Server/DB/mongoDBconnect.js';
+
+import { authorize, socketAuthenticate } from './Server/utils/authorization.js';
+
+try {
+	await connect();
 	server.listen(process.env.PORT, () => {
 		console.log('app listening on port', server.address().port);
 	});
-}
 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImNvbXBhbnlJZCI6IjYyYjA3MmYxMGNjZWZkNjc2NGQxMzZhYSIsImVtYWlsIjoiMTUwNXNhbWlyYWxpQGdtYWlsLmNvbSIsIm5hbWUiOiJXZWVraSJ9LCJpYXQiOjE2NTYxMTUxNzYsImV4cCI6MTY1NjU0NzE3Nn0.XYu4_0CwhiwOCEk4bZxT7vN2k04DBR-OcYEhQyK2yq0
+	const wrap = (middleware) => (socket, next) =>
+		middleware(socket.request, {}, next);
+	io.use(wrap(cookieParser()));
+	io.use(wrap(socketAuthenticate));
+	io.on('connection', (socket) => {
+		const user = socket.request.user;
+		const room = user.companyId.toString();
+
+		socket.on('login', ({ id }) => {
+			if (id === null) {
+				socket.join(room);
+				socket.to(room).emit('joined', {
+					data: `${user.firstname} ${user.lastname} er nu online`,
+				});
+			}
+		});
+
+		socket.on('logout', () => {
+			socket.to(room).emit('loggedOut', {
+				data: `${user.firstname} ${user.lastname} er nu offline`,
+			});
+		});
+	});
+} catch (e) {
+	console.log('could not connect to db');
+}
 
 app.get('/images/email-images/:image', (req, res) => {
 	res.sendFile(path.resolve('./Server/mail/images/', req.params.image));
 });
-// app.use(authorize);
-
-app.use(authRouter);
-import { authorize } from './Server/utils/authorization.js';
 
 app.use('/api/auth', authorize);
-app.use((req, res, next) => {
-	next();
-});
+
+import authRouter from './Server/routes/auth.routes.js';
+app.use(authRouter);
+
+import userRouter from './Server/routes/user.routes.js';
 app.use('/api', userRouter);
 
+import companyRouter from './Server/routes/company.routes.js';
 app.use('/api', companyRouter);
+
+import postRouter from './Server/routes/post.routes.js';
+app.use('/api', postRouter);
 
 app.use('/*', (req, res) => {
 	res.redirect('/');
 });
-import authRouter from './Server/routes/auth.routes.js';
-import userRouter from './Server/routes/user.routes.js';
-import companyRouter from './Server/routes/company.routes.js';
-import { connect } from './Server/DB/mongoDBconnect.js';
-
-// app.get('*', (req,res) => {res.redirect('/')})
-
-// //io socket connection
-// import { Server } from "socket.io";
-// const io = new Server(server);
-
-// const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
-
-// let connectedUser = []
-
-// io.on('connection', (socket) => {
-
-//     const user = socket.handshake.auth;
-//     connectedUser.push({uid: user.uid, email: user.email});
-
-//     io.on('end', (socket) => {
-//         socket.disconnect();
-//     })
-// })

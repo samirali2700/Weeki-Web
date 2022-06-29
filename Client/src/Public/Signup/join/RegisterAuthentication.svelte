@@ -6,7 +6,7 @@
 	export let password;
 	export let registerAuthentication;
 
-	let rePass = '';
+	let rePass = '123456789';
 	let match = true;
 
 	function checkMatch() {

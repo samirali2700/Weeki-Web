@@ -3,7 +3,7 @@ import { derived, writable, readable, get } from 'svelte/store';
 export const user = writable({});
 export const isLoading = writable(false);
 
-export const loggedIn = derived(user, $user => {
+export const loggedIn = derived(user, ($user) => {
 	if (Object.keys($user).length > 0) {
 		return true;
 	}

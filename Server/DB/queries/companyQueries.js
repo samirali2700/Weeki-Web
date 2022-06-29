@@ -51,3 +51,19 @@ export const REMOVE_EMPLOYEE = async (_companyId, _id) => {
 		{ $pull: { employees: { _id: _id } } }
 	);
 };
+
+export const ADD_POST = (_companyId, post) => {
+	return companies.updateOne(
+		{ _id: _companyId },
+		{ $addToSet: { posts: post } }
+	);
+};
+export const FETCH_POSTS = (_companyId) => {
+	return companies.findOne({ _id: _companyId }, { projection: { posts: 1 } });
+};
+export const REMOVE_POST = async (_companyId, _id) => {
+	return companies.updateOne(
+		{ _id: _companyId },
+		{ $pull: { posts: { _id: _id } } }
+	);
+};

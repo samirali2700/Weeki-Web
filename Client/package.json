@@ -20,14 +20,14 @@
   },
   "dependencies": {
     "sirv-cli": "^2.0.0",
+    "socket.io-client": "^4.5.1",
     "svelte-clipboard": "^1.0.0",
     "svelte-icons": "^2.1.0",
     "svelte-loading-spinners": "^0.1.7",
     "svelte-navigator": "^3.1.6",
+    "svelte-notifications": "^0.9.95",
     "svelte-routing": "^1.6.0",
-    "svelte-simple-datatables": "^0.2.3",
-    "svelte-table": "^0.3.4",
     "toastr": "^2.1.4",
-    "yrv": "^0.0.53"
+    "weeknumber": "^1.2.1"
   }
 }

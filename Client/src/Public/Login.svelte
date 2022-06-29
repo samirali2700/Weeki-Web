@@ -9,11 +9,12 @@
 	import { notifyError, notifySuccess } from '../utils/notify';
 	import { authPost } from '../utils/fetches.js';
 	import { SIGNIN } from '../utils/endpoints';
+	import { CONNECT } from '../utils/socket';
 
 	let isLoading = false;
 
-	let email;
-	let password;
+	let email = '1505samirali@gmail.com';
+	let password = '123456789';
 
 	async function login() {
 		isLoading = true;
@@ -25,6 +26,8 @@
 
 		if (payload) {
 			$user = payload.user;
+			CONNECT();
+			sessionStorage.setItem('userId', $user._id);
 			sessionStorage.removeItem('lastVisited');
 			const theme = localStorage.getItem($user._id);
 			if (theme) {
@@ -81,6 +84,3 @@
 		</div>
 	</div>
 {/if}
-
-<style>
-</style>

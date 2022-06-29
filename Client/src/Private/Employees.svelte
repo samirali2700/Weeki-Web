@@ -4,7 +4,6 @@
 	import Overview from './Employee/Overview.svelte';
 	import AddEmployee from './Employee/AddEmployee.svelte';
 	import EditEmployee from './Employee/EditEmployee.svelte';
-	import SearchEmployee from './Employee/SearchEmployee.svelte';
 
 	import { Router, Route, link } from 'svelte-navigator';
 

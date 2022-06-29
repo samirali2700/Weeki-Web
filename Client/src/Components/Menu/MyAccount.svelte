@@ -12,7 +12,7 @@
 	{#if menu_mode === 'C'}
 		<div class="myAccount">
 			<div class="sidebar-icon"><FaUserCircle /></div>
-			<span>Min Konto</span>
+			<span class="my-account">Min Konto</span>
 			<span class="arrow">
 				{#if show}
 					<IoIosArrowUp />
@@ -32,19 +32,22 @@
 	.arrow {
 		width: 26px;
 		height: 26px;
-		margin-left: 5px;
 	}
 	.myAccount {
-		position: fixed;
-		right: 50px;
+		position: absolute;
+		right: 30px;
 		top: 30px;
-		width: fit-content;
+		width: 195px;
 		height: 32px;
 		display: flex;
 		column-gap: 10px;
 		align-items: center;
 		color: var(--text-color);
 		align-items: center;
+	}
+	.my-account {
+		font-size: large;
+		width: auto;
 	}
 	.menu-icon {
 		height: 32px;
@@ -64,7 +67,7 @@
 	}
 	.sidebar-icon {
 		color: var(--text-color);
-		border-radius: 50%;
+
 		width: 38px;
 		height: 38px;
 		padding: 5px;

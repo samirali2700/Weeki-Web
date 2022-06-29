@@ -2,15 +2,13 @@
 	import Logo from '../Components/Logo.svelte';
 	import { onMount } from 'svelte';
 
-	import { apiGet, apiPost } from '../utils/fetches';
+	import { apiPost } from '../utils/fetches';
 
 	import { navigate } from 'svelte-navigator';
 
 	import { invitationInfo } from '../Stores/user';
 
 	import { POST_INVITATION_VALIDATION } from '../utils/endpoints';
-
-	let page = '/';
 
 	onMount(async () => {
 		const { payload } = await apiPost(POST_INVITATION_VALIDATION('status'), {});

@@ -5,7 +5,7 @@
 	import { user, isLoading } from './Stores/user';
 
 	import { authGet } from './utils/fetches';
-	import { notifyError, notifyInfo } from './utils/notify';
+	import Notifications from 'svelte-notifications';
 
 	onMount(async () => {
 		$isLoading = true;
@@ -14,6 +14,7 @@
 			$user = payload.user;
 		} else {
 			sessionStorage.removeItem('lastVisited');
+			sessionStorage.removeItem('userId');
 		}
 		$isLoading = false;
 	});
@@ -27,4 +28,6 @@
 		async></script>
 </svelte:head>
 
-<Routes />
+<Notifications>
+	<Routes />
+</Notifications>

@@ -2,9 +2,9 @@
 	import PasswordInput from '../../../Components/PasswordInput.svelte';
 	import { notifyError } from '../../../utils/notify';
 
-	let email = '';
-	let password = '';
-	let rePass = '123456798';
+	let email = 'samirali@live.dk';
+	let password = '123456789';
+	let rePass = '123456789';
 	let match = true;
 	let checked = false;
 

@@ -25,13 +25,11 @@ import {
 	OK_CODE,
 	NOT_FOUND_CODE,
 	DUPLICATE_RECORD,
-	RECORD_DELETED,
 } from '../utils/errors/statusCodes.js';
 import { FETCH_USERS } from '../DB/queries/userQueries.js';
 
 import { ID } from '../DB/mongoDBconnect.js';
 import { generateRegisterToken, verifyToken } from '../utils/tokens.js';
-import { GET_COUNT } from '../DB/queries/authenticationQueries.js';
 
 import {
 	DELETE_AUTHENTICATION,
@@ -41,15 +39,6 @@ import {
 
 import mailService from '../mail/mailService.js';
 
-export const GET_COMPANY = async ({ companyId }) => {
-	return new Promise(async (resolve, reject) => {
-		const company = await FETCH_COMPANY(companyId);
-		if (company) {
-			resolve({ code: OK_CODE, payload: { company: company } });
-		}
-		reject({ code: NOT_FOUND_CODE, error: { message: COMPANY_NOT_FOUND } });
-	});
-};
 export const CREATE_COMPANY = async ({ id, company }) => {
 	return new Promise(async (resolve, reject) => {
 		company.createdBy = ID(id);
@@ -59,7 +48,6 @@ export const CREATE_COMPANY = async ({ id, company }) => {
 			const result = await ADD_COMPANY(company);
 			resolve({ code: CREATED_CODE, payload: { companyId: result.insertedId } });
 		} catch (e) {
-			console.log(e);
 			reject({
 				code: BAD_REQ_CODE,
 				error: {
@@ -67,30 +55,6 @@ export const CREATE_COMPANY = async ({ id, company }) => {
 				},
 			});
 		}
-	});
-};
-export const GET_EMPLOYEE = async ({ companyId, employeeId }) => {
-	return new Promise(async (resolve, reject) => {
-		const { employees } = await FETCH_EMPLOYEE(companyId, employeeId);
-		if (employees) {
-			resolve({ code: OK_CODE, payload: { employee: employees[0] } });
-		}
-		reject({ code: NOT_FOUND_CODE, error: { message: EMPLOYEE_NOT_FOUND } });
-	});
-};
-export const GET_EMPLOYEES = async ({ companyId }) => {
-	return new Promise(async (resolve, reject) => {
-		const { employees } = await FETCH_EMPLOYEES(companyId);
-		console.log('GET_EMPLYEES in company.service', employees);
-		if (employees.length > 0) {
-			const users = await (await FETCH_USERS(companyId)).toArray();
-
-			resolve({
-				code: OK_CODE,
-				payload: { employees: employees, userInfo: users },
-			});
-		}
-		reject({ code: NOT_FOUND_CODE, error: { message: EMPLOYEE_NOT_FOUND } });
 	});
 };
 export const CREATE_EMPLOYEE = async ({ companyId, id, position }) => {
@@ -107,6 +71,62 @@ export const CREATE_EMPLOYEE = async ({ companyId, id, position }) => {
 				});
 			}
 			reject({ code: DUPLICATE_RECORD, error: { message: EMPLOYEE_EXISTS } });
+		}
+		reject({ code: NOT_FOUND_CODE, error: { message: COMPANY_NOT_FOUND } });
+	});
+};
+
+export const GET_COMPANY = async ({ companyId }) => {
+	return new Promise(async (resolve, reject) => {
+		const company = await FETCH_COMPANY(companyId);
+		if (company) {
+			resolve({ code: OK_CODE, payload: { company: company } });
+		}
+		reject({ code: NOT_FOUND_CODE, error: { message: COMPANY_NOT_FOUND } });
+	});
+};
+export const GET_EMPLOYEE = async ({ companyId, employeeId }) => {
+	return new Promise(async (resolve, reject) => {
+		const { employees } = await FETCH_EMPLOYEE(companyId, employeeId);
+		if (employees) {
+			resolve({ code: OK_CODE, payload: { employee: employees[0] } });
+		}
+		reject({ code: NOT_FOUND_CODE, error: { message: EMPLOYEE_NOT_FOUND } });
+	});
+};
+export const GET_EMPLOYEES = async ({ companyId }) => {
+	return new Promise(async (resolve, reject) => {
+		const { employees } = await FETCH_EMPLOYEES(companyId);
+		if (employees.length > 0) {
+			const users = await (await FETCH_USERS(companyId)).toArray();
+
+			resolve({
+				code: OK_CODE,
+				payload: { employees: employees, userInfo: users },
+			});
+		}
+		reject({ code: NOT_FOUND_CODE, error: { message: EMPLOYEE_NOT_FOUND } });
+	});
+};
+
+export const DELETE_COMPANY = ({ companyId, id }) => {
+	return new Promise(async (resolve, reject) => {
+		const { employees } = await FETCH_EMPLOYEES_ID(companyId);
+		const employeesId = employees.map((e) => e._id);
+
+		employeesId.push(id);
+
+		resolve({ code: 201, payload: { message: 'good' } });
+		const result = await REMOVE_COMPANY(companyId);
+		if (result.deletedCount !== 0) {
+			try {
+				const { code, payload } = await DELETE_AUTHENTICATIONS({
+					ids: employeesId,
+				});
+				resolve({ code: code, payload: payload });
+			} catch (e) {
+				reject({ code: e.code, error: e.error });
+			}
 		}
 		reject({ code: NOT_FOUND_CODE, error: { message: COMPANY_NOT_FOUND } });
 	});
@@ -175,28 +195,5 @@ export const VALIDATE_REGISTRATION_TOKEN = ({ registrationToken }) => {
 		} catch (e) {
 			reject({ code: NOT_FOUND_CODE, error: { message: BAD_TOKEN } });
 		}
-	});
-};
-
-export const DELETE_COMPANY = ({ companyId, id }) => {
-	return new Promise(async (resolve, reject) => {
-		const { employees } = await FETCH_EMPLOYEES_ID(companyId);
-		const employeesId = employees.map((e) => e._id);
-
-		employeesId.push(id);
-
-		resolve({ code: 201, payload: { message: 'good' } });
-		const result = await REMOVE_COMPANY(companyId);
-		if (result.deletedCount !== 0) {
-			try {
-				const { code, payload } = await DELETE_AUTHENTICATIONS({
-					ids: employeesId,
-				});
-				resolve({ code: code, payload: payload });
-			} catch (e) {
-				reject({ code: e.code, error: e.error });
-			}
-		}
-		reject({ code: NOT_FOUND_CODE, error: { message: COMPANY_NOT_FOUND } });
 	});
 };

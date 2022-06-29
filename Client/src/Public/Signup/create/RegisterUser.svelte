@@ -2,8 +2,8 @@
 	export let onSubmit;
 
 	let detail = {
-		firstname: 'Ali',
-		lastname: 'Chouikhi',
+		firstname: 'Malik',
+		lastname: 'Mayo',
 		phone: '25323150',
 		pb: 'https://i.pinimg.com/originals/d9/56/9b/d9569bbed4393e2ceb1af7ba64fdf86a.jpg',
 		admin: true,

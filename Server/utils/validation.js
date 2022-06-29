@@ -1,7 +1,7 @@
-import { ID_VALIDATED, ID } from '../DB/mongoDBconnect.js';
+import { ID_VALIDATED } from '../DB/mongoDBconnect.js';
 
-export const checkParams = fn => {
-	return async function (req, res, next) {
+export const checkParams = (fn) => {
+	return async function (req, res) {
 		let params = {};
 		try {
 			for (const key of Object.keys(req.params)) {
@@ -9,7 +9,6 @@ export const checkParams = fn => {
 			}
 			fn(req, res, params);
 		} catch (e) {
-			console.log(e);
 			res.status(401).send(e.error);
 		}
 	};

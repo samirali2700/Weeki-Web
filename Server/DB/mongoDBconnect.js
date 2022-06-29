@@ -12,15 +12,17 @@ export const connect = () => {
 };
 export const DB = CLIENT.db(DB_NAME);
 
-export const ID = id => ObjectId(id);
-export const VALIDATE = id => ObjectId.isValid(id);
+export const ID = (id) => ObjectId(id);
+export const VALIDATE = (id) => ObjectId.isValid(id);
 
 import { BAD_REQ_CODE } from '../utils/errors/statusCodes.js';
 import { BAD_PARAMS } from '../utils/errors/errors.js';
-export const ID_VALIDATED = id => {
+export const ID_VALIDATED = (id) => {
 	return new Promise(async (resolve, reject) => {
 		ObjectId.isValid(id)
 			? resolve(ObjectId(id))
 			: reject({ code: BAD_REQ_CODE, error: BAD_PARAMS });
 	});
 };
+
+export const newId = () => new ObjectId();

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-export const hash = value => {
+export const hash = (value) => {
 	return bcrypt.hashSync(value, 12);
 };
 export const compare = (value, hashedValue) => {

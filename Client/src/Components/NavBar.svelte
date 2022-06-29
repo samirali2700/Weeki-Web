@@ -19,9 +19,13 @@
 	import { SIGNOUT, authGet } from '../utils/fetches';
 	import { notifyInfo } from '../utils/notify';
 
+	import { DISCONNECT, joined, left } from '../utils/socket';
+
+	import { getNotificationsContext } from 'svelte-notifications';
+	const { addNotification } = getNotificationsContext();
+
 	// update the sessionStorage each time the page state changes
 	$: sessionStorage.setItem('lastVisited', $page);
-	$: console.log('page update', $page);
 
 	let show = false;
 
@@ -31,7 +35,6 @@
 		{ name: 'Vagtplan', icon: MdSchedule, endpoint: '/schedule' },
 		{ name: 'Beskeder', icon: IoIosChatboxes, endpoint: '/messages' },
 	];
-
 	onMount(() => {
 		if ($isAdmin) {
 			navigation_items = [
@@ -43,6 +46,23 @@
 				},
 			];
 		}
+	});
+
+	joined((data) => {
+		addNotification({
+			text: data,
+			position: 'bottom-right',
+			removeAfter: 2000,
+		});
+	});
+
+	left(function (data) {
+		addNotification({
+			text: data,
+			position: 'bottom-right',
+			removeAfter: 2000,
+			type: 'danger',
+		});
 	});
 
 	let screenWidth;
@@ -67,9 +87,11 @@
 	async function signout() {
 		const { success, error } = await SIGNOUT();
 		if (success) {
+			DISCONNECT();
 			$page = '/';
 			$user = {};
 			sessionStorage.setItem('lastVisited', '/');
+			sessionStorage.removeItem('userId');
 			localStorage.removeItem('savedTheme');
 			navigate('/');
 		} else notifyError(error.message);
@@ -110,7 +132,9 @@
 	{/if}
 
 	<div>
-		<MyAccount class="menu" bind:show {menu_mode} />
+		<div class="menu">
+			<MyAccount bind:show {menu_mode} />
+		</div>
 		<Menu
 			{navigation_items}
 			bind:mode={menu_mode}
@@ -121,12 +145,6 @@
 </div>
 
 <style>
-	.menu {
-		position: absolute;
-		top: 25px;
-		right: 90px;
-	}
-
 	.nav {
 		height: 100px;
 		background-color: var(--primary-color);

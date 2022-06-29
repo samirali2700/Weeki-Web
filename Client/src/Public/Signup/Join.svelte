@@ -1,5 +1,5 @@
 <script>
-	import { authPost, apiPost, apiGet } from '../../utils/fetches';
+	import { apiPost } from '../../utils/fetches';
 	import ValidateToken from './join/ValidateToken.svelte';
 	import RegisterAuthentication from './join/RegisterAuthentication.svelte';
 	import RegisterUser from './join/RegisterUser.svelte';
@@ -19,7 +19,7 @@
 	export let companyId;
 	export let step;
 
-	let password = '';
+	let password = '123456789';
 
 	let termAgree = false;
 
@@ -41,13 +41,6 @@
 
 	async function onRegisterAuthentication(e) {
 		await registerAuthentication(e, 'join');
-	}
-
-	async function finishRegistration(e) {
-		await registerAuthentication({ email: email, password: e.password });
-
-		await addToCompany();
-		await registerUser(e.detail);
 	}
 </script>
 

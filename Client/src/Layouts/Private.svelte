@@ -22,12 +22,12 @@
 		font: '"Gluten", cursive',
 	};
 
-	$: cssVarStyles = Object.entries(styles)
+	$: Style = Object.entries(styles)
 		.map(([key, value]) => `--${key}:${value}`)
 		.join(';');
 </script>
 
-<div style={cssVarStyles}>
+<div style={Style}>
 	<NavBar />
 	<div class="main">
 		{#if $isLoading}
@@ -49,8 +49,6 @@
 		color: #000;
 		border-left: 1px solid var(--secondary-color, ligthgrey);
 		border-right: 1px solid var(--secondary-color, ligthgrey);
-		overflow: auto;
-		overflow-y: overlay;
 	}
 
 	.main :global(.center-content) {
@@ -59,6 +57,7 @@
 		justify-content: center;
 		height: calc(100vh - 200px);
 	}
+
 	.main :global(.center-container) {
 		display: flex;
 		justify-content: center;
@@ -90,6 +89,7 @@
 		align-items: center;
 		justify-content: space-between;
 		padding-right: 15px;
+		column-gap: 15px;
 	}
 	.main :global(.divider) {
 		border-bottom: 2px solid var(--secondary-color);
@@ -100,6 +100,7 @@
 		background-color: var(--secondary-color, ligthgrey);
 		color: var(--text-color, ligthgrey);
 		padding: 5px 16px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 	}
 	.main :global(.tab) {
 		display: flex;

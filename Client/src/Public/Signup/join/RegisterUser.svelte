@@ -1,10 +1,9 @@
 <script>
-	import PasswordInput from '../../../Components/PasswordInput.svelte';
 	let detail = {
 		admin: false,
-		firstname: '',
-		lastname: '',
-		phone: '',
+		firstname: 'Malik',
+		lastname: 'Mayo',
+		phone: '42154651',
 		pb: '',
 	};
 	export let onRegister;

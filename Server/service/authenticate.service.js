@@ -1,7 +1,6 @@
 import {
 	GET_AUTHENTICATION,
 	CREATE_AUTHENTICATION,
-	AUTHENTICATION_EXISTS,
 	REMOVE_AUTHENTICATION,
 	GET_COUNT,
 	REMOVE_AUTHENTICATIONS,
@@ -21,10 +20,8 @@ import {
 	BAD_REQ_CODE,
 	CREATED_CODE,
 	UNAUTHORIZED_CODE,
-	INTERNAL_ERROR_CODE,
 	OK_CODE,
 	NOT_FOUND_CODE,
-	RECORD_DELETED,
 	DUPLICATE_RECORD,
 } from '../utils/errors/statusCodes.js';
 
@@ -47,7 +44,7 @@ const GET_DETAIL = async (id) => {
 	});
 };
 
-export const AUTHENTICATE = async ({ accessToken, refreshToken }) => {
+export const AUTHENTICATE = async ({ accessToken, refreshToken, type }) => {
 	return new Promise(async (resolve, reject) => {
 		if (accessToken) {
 			try {
@@ -59,15 +56,19 @@ export const AUTHENTICATE = async ({ accessToken, refreshToken }) => {
 			}
 		} else if (refreshToken) {
 			try {
+				let tokens = {};
 				const { payload } = await verifyToken(refreshToken, 'refresh');
-				const accessToken = await generateAccessToken(payload.data);
-				const tokens = {
-					accessToken: accessToken,
-					refreshToken: false,
-				};
-				console.log(new Date(payload.exp * 1000).toLocaleTimeString());
-				if (payload.exp * 1000 - new Date().getTime() > 5 * 1000 * 60) {
-					tokens.refreshToken = await generateRefreshToken(payload.data, 60 * 60);
+				if (!type) {
+					const accessToken = await generateAccessToken(payload.data);
+					tokens = {
+						accessToken: accessToken,
+						refreshToken: false,
+					};
+					console.log('now:', new Date().toLocaleTimeString());
+					console.log(new Date(payload.exp * 1000).toLocaleTimeString());
+					if (payload.exp * 1000 - new Date().getTime() > 5 * 1000 * 60) {
+						tokens.refreshToken = await generateRefreshToken(payload.data, 60 * 60);
+					}
 				}
 				const user = await GET_DETAIL(ID(payload.data.user._id));
 				resolve({ code: 200, payload: user, tokens: tokens });
@@ -137,7 +138,7 @@ export const SIGNUP = async ({ email, password }) => {
 export const DELETE_AUTHENTICATION = ({ id }) => {
 	return new Promise(async (resolve, reject) => {
 		const result = await REMOVE_AUTHENTICATION(id);
-		if (result.matchedCount !== 0) {
+		if (result.deletedCount !== 0) {
 			try {
 				const { code, payload } = await DELETE_USER({ id });
 				resolve({ code: code, payload: payload });
@@ -173,4 +174,3 @@ export const CHECK_AUTHENTICATION_EXISTS = ({ email }) => {
 		} else reject({ code: DUPLICATE_RECORD, error: { message: USER_EXISTS } });
 	});
 };
-export const SIGNOUT = async (user) => {};

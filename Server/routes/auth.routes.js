@@ -1,20 +1,14 @@
 import { Router } from 'express';
-import {
-	AUTHENTICATE,
-	SIGNIN,
-	SIGNUP,
-	SIGNOUT,
-} from '../service/authenticate.service.js';
+import { SIGNIN, SIGNUP } from '../service/authenticate.service.js';
 const authRouter = Router();
 
-import { auth, authorize } from '../utils/authorization.js';
+import { authorize } from '../utils/authorization.js';
 
 authRouter
 	.get('/auth', authorize, (req, res) => {
 		res.status(req.code).send({ payload: { user: req.user } });
 	})
 	.post('/auth/signin', async (req, res) => {
-		console.log('signin auth');
 		try {
 			const { code, payload, accessToken, refreshToken } = await SIGNIN({
 				email: req.body.email,
@@ -45,7 +39,6 @@ authRouter
 		}
 	})
 	.delete('/auth/signout', async (req, res) => {
-		// await SIGNOUT(req.cookies.refreshToken);
 		res.clearCookie('refreshToken');
 		res.clearCookie('accessToken');
 		res.status(201).send({ success: 'Signed out successfully' });

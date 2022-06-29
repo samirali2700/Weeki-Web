@@ -8,6 +8,8 @@
 	import { user, isAdmin } from '../../Stores/user';
 	import { apiPatch, apiGet, apiDelete } from '../../utils/fetches';
 	import { notifySuccess, notifyInfo, notifyError } from '../../utils/notify';
+	import { navigate } from 'svelte-navigator';
+	import { page } from '../../Stores/app';
 
 	let editable = false;
 	let logonEdit = false;
@@ -16,6 +18,7 @@
 	let showLogin = false;
 	let email = '';
 	let password = '';
+	let rePass = '';
 
 	let deleteConfirm = false;
 
@@ -28,6 +31,7 @@
 
 		if (payload) {
 			$user = {};
+			$page = '/';
 		} else notifyError(error.message);
 	}
 
@@ -40,11 +44,28 @@
 			editable = false;
 		} else editable = true;
 	}
-
+	async function saveAuthenticationChange() {
+		if (logonEdit) {
+			if (password === rePass) {
+			}
+			notifyError('Adganskode matcher ikke');
+		} else logonEdit = true;
+	}
 	async function getLogin() {
 		const { payload, error } = await apiGet(GET_LOGIN());
 		if (payload) {
 			email = payload.login.email;
+		}
+	}
+
+	function toggleLogin() {
+		if (showLogin) {
+			showLogin = false;
+			logonEdit = false;
+			password = '';
+			rePass = '';
+		} else {
+			showLogin = true;
 		}
 	}
 </script>
@@ -145,7 +166,7 @@
 			<div class=" grid-full-column">
 				<div class="flex-align" style:width="50%">
 					<p class="undertitle">Login detaljer</p>
-					<div class="icon-tiny icon" on:click={() => (showLogin = !showLogin)}>
+					<div class="icon-tiny icon" on:click={toggleLogin}>
 						{#if showLogin}<FaChevronUp /> {:else} <FaChevronDown />{/if}
 					</div>
 				</div>
@@ -153,18 +174,19 @@
 			{#if showLogin}
 				<div class="grid-full-column divider" />
 				<p>E-mail</p>
-				<input class="editable-value" value={email} />
+				<input class="editable-value" value={email} readonly={!logonEdit} />
+				{#if logonEdit}
+					<p>Ny Adgangskode</p>
+					<input class="editable-value" bind:value={password} />
 
-				<p>Ny Adgangskode</p>
-				<input class="editable-value" value="123456789" />
-
-				<p>Bekræft Ny Adgangskode</p>
-				<input class="editable-value" value="123456789" />
+					<p>Bekræft Ny Adgangskode</p>
+					<input class="editable-value" bind:value={rePass} />
+				{/if}
 			{/if}
 		</div>
 		{#if showLogin}
 			<br />
-			<button class="button" on:click={() => (logonEdit = !logonEdit)}
+			<button class="button" on:click={saveAuthenticationChange}
 				>{#if !logonEdit}Ændre login oplysninger{:else}Gem login oplysninger{/if}</button
 			>
 		{/if}

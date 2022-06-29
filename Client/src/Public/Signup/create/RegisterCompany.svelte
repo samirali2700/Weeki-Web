@@ -2,8 +2,8 @@
 	export let onSubmit;
 
 	let company = {
-		name: 'Weeki',
-		cvr: 4568743151,
+		name: 'MinVirk',
+		cvr: 45687431541,
 		phone: '421545651',
 	};
 

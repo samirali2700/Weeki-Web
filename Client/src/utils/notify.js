@@ -1,14 +1,12 @@
-import { toast } from '@zerodevx/svelte-toast';
-
-export const notifyError = message => {
+export const notifyError = (message) => {
 	toastr.error(message, 'Fejl');
 };
 
-export const notifySuccess = message => {
+export const notifySuccess = (message) => {
 	toastr.success(message);
 };
 
-export const notifyInfo = message => {
+export const notifyInfo = (message) => {
 	toastr.info(message);
 };
 toastr.options = {
